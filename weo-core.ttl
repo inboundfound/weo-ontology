@@ -1,0 +1,178 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+
+# WEO — Web Engine Optimization ontology, core module.
+# Namespace served from GitHub Pages; a w3id.org redirect may replace it later
+# without changing term local names.
+
+weo: a owl:Ontology ;
+    dct:title "WEO Core Ontology (Web Engine Optimization)" ;
+    dct:description "Standards-grounded observation layer for web-engine data in a property graph. WEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Judgments and decisions are modeled in higher layers." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.2.0" .
+
+# --- Annotation properties -------------------------------------------------
+
+weo:epistemicLayer a owl:AnnotationProperty ;
+    rdfs:comment "One of: entity, episode, observation, derivation, judgment. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce judgment-layer terms and must mark them." .
+
+weo:groundedIn a owl:AnnotationProperty ;
+    rdfs:comment "The primary standard or API contract that defines this term's meaning." .
+
+weo:canonicalStore a owl:AnnotationProperty ;
+    rdfs:comment "Where this term's instances authoritatively live: neo4j, bigquery, vector-store, crm. The ontology is storage-agnostic; identity keys (websiteId, address, term name, date) join across stores." .
+
+# --- Classes ----------------------------------------------------------------
+
+weo:Website a owl:Class ;
+    rdfs:label "Website" ;
+    weo:epistemicLayer "entity" ;
+    weo:groundedIn "WHATWG URL Standard (origin)" ;
+    dct:description "A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics." .
+
+weo:URL a owl:Class ;
+    rdfs:label "URL" ;
+    weo:epistemicLayer "entity" ;
+    weo:groundedIn "WHATWG URL Standard" ;
+    dct:description "A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations." .
+
+weo:Term a owl:Class ;
+    rdfs:label "Term" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A search query string, unique by name. Data sources are attributed on observations that mention the term, never as subtypes of the term." .
+
+weo:Crawl a owl:Class ;
+    rdfs:label "Crawl" ;
+    weo:epistemicLayer "episode" ;
+    dct:description "One crawl run over one Website: time-bounded, agent-attributed, immutable once finished." .
+
+weo:SerpSnapshot a owl:Class ;
+    rdfs:label "SERP Snapshot" ;
+    weo:epistemicLayer "episode" ;
+    dct:description "One observation of a search results page for a Term at a moment, for a stated engine, locale, and device." .
+
+weo:Topic a owl:Class ;
+    rdfs:label "Topic" ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "A named grouping of Terms produced by a clustering or labeling process. Site-scoped. Assignments carry method, model, and confidence." .
+
+weo:SearchPerformanceFact a owl:Class ;
+    rdfs:label "Search Performance Fact" ;
+    weo:epistemicLayer "observation" ;
+    weo:canonicalStore "bigquery" ;
+    weo:groundedIn "Google Search Console Search Analytics API" ;
+    dct:description "The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table." .
+
+# --- Object properties -------------------------------------------------------
+
+weo:partOf a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range weo:Website ;
+    weo:epistemicLayer "entity" .
+
+weo:hasCrawl a owl:ObjectProperty ;
+    rdfs:domain weo:Website ; rdfs:range weo:Crawl ;
+    weo:epistemicLayer "episode" .
+
+weo:fetched a owl:ObjectProperty ;
+    rdfs:domain weo:Crawl ; rdfs:range weo:URL ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "RFC 9110 (HTTP Semantics)" ;
+    dct:description "An HTTP fetch of a URL within a crawl. In the property graph this relationship carries statusCode, contentType, title, metaDescription, robotsMeta, contentHash, fetchedAt." .
+
+weo:linksTo a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range weo:URL ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "WHATWG HTML §4.5.1 (the a element)" ;
+    dct:description "An observed hyperlink. Carries anchorText, rel, firstSeenAt, lastSeenAt, lastSeenCrawlId." .
+
+weo:redirectsTo a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range weo:URL ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "RFC 9110 §15.4 (Redirection 3xx)" .
+
+weo:hasCanonical a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range weo:URL ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "RFC 6596 (The Canonical Link Relation)" .
+
+weo:ranksFor a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range weo:Term ;
+    weo:epistemicLayer "observation" ;
+    weo:canonicalStore "neo4j" ;
+    weo:groundedIn "Google Search Console Search Analytics API" ;
+    dct:description "Windowed rollup projection of SearchPerformanceFacts for a (page, query) pair. Carries clicks, impressions, ctr, avgPosition, periodStart, periodEnd, source, datasetUri, syncedAt." .
+
+weo:hasSnapshot a owl:ObjectProperty ;
+    rdfs:domain weo:Term ; rdfs:range weo:SerpSnapshot ;
+    weo:epistemicLayer "episode" .
+
+weo:hasResult a owl:ObjectProperty ;
+    rdfs:domain weo:SerpSnapshot ; rdfs:range weo:URL ;
+    weo:epistemicLayer "observation" ;
+    dct:description "A result observed on the SERP. Carries position and resultType." .
+
+weo:inTopic a owl:ObjectProperty ;
+    rdfs:domain weo:Term ; rdfs:range weo:Topic ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Process-attributed topic assignment. Carries method, model, confidence, assignedAt." .
+
+weo:childOf a owl:ObjectProperty ;
+    rdfs:domain weo:Topic ; rdfs:range weo:Topic ;
+    weo:epistemicLayer "derivation" .
+
+weo:scopedTo a owl:ObjectProperty ;
+    rdfs:domain weo:Topic ; rdfs:range weo:Website ;
+    weo:epistemicLayer "entity" .
+
+# --- Datatype properties (selection; relationship-carried ones documented in README) ---
+
+weo:origin a owl:DatatypeProperty ;
+    rdfs:domain weo:Website ; rdfs:range xsd:string ;
+    weo:groundedIn "WHATWG URL Standard (origin serialization)" .
+
+weo:address a owl:DatatypeProperty ;
+    rdfs:domain weo:URL ; rdfs:range xsd:string ;
+    weo:groundedIn "WHATWG URL Standard (serialized absolute URL)" .
+
+weo:statusCode a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "RFC 9110 §15 (Status Codes)" .
+
+weo:anchorText a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "WHATWG HTML §4.5.1" .
+
+weo:clicks a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "GSC Search Analytics API" .
+
+weo:impressions a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "GSC Search Analytics API" .
+
+weo:avgPosition a owl:DatatypeProperty ;
+    rdfs:range xsd:float ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "GSC Search Analytics API" .
+
+weo:embeddingRef a owl:DatatypeProperty ;
+    rdfs:domain weo:Term ; rdfs:range xsd:string ;
+    weo:epistemicLayer "derivation" ;
+    weo:canonicalStore "vector-store" ;
+    dct:description "Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance." .
+
+weo:embeddingModel a owl:DatatypeProperty ;
+    rdfs:domain weo:Term ; rdfs:range xsd:string ;
+    weo:epistemicLayer "derivation" .
+
+weo:confidence a owl:DatatypeProperty ;
+    rdfs:range xsd:float ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "0-1 confidence attached to a derivation edge." .
