@@ -90,6 +90,38 @@ FOR (e:ConversionEvent) ON (e.occurredAt);
 CREATE INDEX conversion_point_crm_ref IF NOT EXISTS
 FOR (c:ConversionPoint) ON (c.crmRecordRef);
 
+// ========== DECISION (the judgment tier) ==========
+
+// ---------- Entities ----------
+// Tactics are a shared library (global); intervention category is a slotted-in concept.
+CREATE CONSTRAINT tactic_id IF NOT EXISTS
+FOR (t:Tactic) REQUIRE t.id IS UNIQUE;
+
+CREATE CONSTRAINT diagnostic_id IF NOT EXISTS
+FOR (d:Diagnostic) REQUIRE d.id IS UNIQUE;
+
+// Capabilities are the scope-gate levers, approved per tenant.
+CREATE CONSTRAINT capability_identity IF NOT EXISTS
+FOR (c:Capability) REQUIRE (c.name, c.websiteId) IS UNIQUE;
+
+// Gaps are diagnosed per tenant.
+CREATE CONSTRAINT gap_id IF NOT EXISTS
+FOR (g:Gap) REQUIRE g.id IS UNIQUE;
+
+CREATE CONSTRAINT recommendation_id IF NOT EXISTS
+FOR (r:Recommendation) REQUIRE r.id IS UNIQUE;
+
+// ---------- Episodes ----------
+CREATE CONSTRAINT experiment_id IF NOT EXISTS
+FOR (e:Experiment) REQUIRE e.id IS UNIQUE;
+
+CREATE INDEX experiment_concluded IF NOT EXISTS
+FOR (e:Experiment) ON (e.concludedAt);
+
+// Precedent lookup: "tactics tried against a gap of this kind" scans by gapType.
+CREATE INDEX gap_website IF NOT EXISTS
+FOR (g:Gap) ON (g.websiteId);
+
 // ========== NOTES ==========
 // Embeddings live in an external vector store; the graph keeps only the
 // derivation claim (embeddingRef, embeddingModel, embeddedAt) on :Term.

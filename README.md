@@ -44,6 +44,7 @@ acronyms.
 | `weo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
 | `weo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
 | `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled judgment) |
+| `weo-decision.ttl` | the judgment tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
 | `weo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
 | `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for all three modules |
@@ -60,12 +61,18 @@ data has been missing.
   core        Website · URL · Term · Topic     Crawl · SerpSnapshot
   visibility  Engine · Brand · Prompt          LLMResponse
   engagement  ConversionPoint · SearchIntent   ConversionEvent
+  decision    Gap · Tactic · Capability        Experiment (→ Outcome)
 
   observations attach facts to entities/episodes (FETCHED, CITES, MENTIONS…)
   derivations carry method/model/confidence (IN_TOPIC, embeddingRef…)
-  judgments are labeled claims (targetsIntent, attributedResponse)
+  judgments are labeled claims (targetsIntent, addressableBy, Recommendation)
   high-cardinality facts live in column stores; graphs keep windowed rollups
   with datasetUri pointing at the authoritative table
+
+  the strata get more interpretive upward: core is bedrock (falsifiable,
+  standards-grounded); decision is the surface (diagnosed, recommended). Load
+  only the strata you need — filter to observation and the whole judgment
+  tier drops away.
 ```
 
 Two rollup patterns rhyme on purpose:
@@ -102,6 +109,42 @@ WHERE r.capturedAt < e.occurredAt <= r.capturedAt + duration('P7D')
 RETURN e.id, cp.crmRecordRef, collect(r.id) AS candidate_responses;
 ```
 
+## The decision layer — from an observation to a labeled recommendation
+
+`weo-decision.ttl` is the top stratum: where facts become a plan, honestly
+labeled as judgment. It is the one chain the whole model builds toward —
+
+```
+observation  →  Diagnostic reveals Gap  →  Gap addressableBy Tactic
+             →  Tactic requiresCapability          (the scope gate)
+             →  Experiment tests Tactic, inContext Gap, producedOutcome
+             →  Recommendation recommends Tactic, closesGap, supportedBy Experiment
+```
+
+The payoff query — *the metric that triggered a diagnosis, the gap it revealed,
+the in-reach tactic to close it, and the precedent that earns the pick* — is one
+traversal:
+
+```cypher
+// In-reach tactics for an open gap, ranked by precedent strength
+MATCH (g:Gap {websiteId: $tenant})-[:ADDRESSABLE_BY]->(t:Tactic)
+WHERE all(c IN [(t)-[:REQUIRES_CAPABILITY]->(cap) | cap]
+          WHERE (cap)-[:APPROVED]->() OR cap.approved = true)   // scope gate
+OPTIONAL MATCH (e:Experiment)-[:TESTS]->(t),
+              (e)-[:IN_CONTEXT]->(:Gap)-[:GAP_TYPE]->(gt)<-[:GAP_TYPE]-(g),
+              (e)-[:PRODUCED_OUTCOME]->(o:Outcome)
+RETURN t.label, count(e) AS precedents, avg(o.lift) AS avg_lift
+ORDER BY precedents DESC, avg_lift DESC;
+```
+
+**Classes, never values.** `Gap` and `Tactic` are terms; a *Citation-Waterfall
+stage* and *"publish a comparison page"* are not — they are `skos:Concept`s and
+instances you slot into `gapType`, `inIntervention`, `onDimension`, `atPriority`.
+That split is the point: **open scaffolding, your proprietary blend.** The frame
+grows adoption; the fill is yours. (This is the one module that leans on SKOS as
+a load-bearing primitive rather than an optional bridge — the taxonomy standard
+is the right base for the "bring your own scheme" layer.)
+
 ## Interoperability — stands alone, bridges out
 
 WEO has **no hard dependency**: core, visibility, and engagement load and reason
@@ -120,7 +163,9 @@ is an **optional crosswalk** — alignments, not imports:
 - **PROV-O** (the provenance spine): WEO's epistemic layering *is* provenance.
   `Crawl` is a `prov:Activity`, `Engine` a `prov:SoftwareAgent`, a captured
   `LLMResponse` a `prov:Entity` attributed (`onEngine`→`prov:wasAttributedTo`) to
-  the engine that generated it.
+  the engine that generated it. The decision layer extends the same spine — an
+  `Experiment` is a `prov:Activity` that `produced` its `Outcome` (a
+  `prov:Entity`), and a `Gap`/`Recommendation` `wasDerivedFrom` its evidence.
 - **SKOS** (the taxonomy spine): `Topic` is a `skos:Concept`, `childOf` is
   `skos:broader`. This is the seam where users slot in their **own** concept
   scheme — of topics, gaps, or funnel stages — without editing the ontology.
@@ -137,8 +182,14 @@ object properties resolve to node references, datatype properties carry their
 
 ## What is deliberately NOT here
 
-- **Judgment/decision machinery** (recommendations, playbooks, experiments,
-  outcomes) — that layer references these terms but lives above them.
+- **Strategy / agency configuration** — the rules that constrain which approach
+  is allowed under which conditions. `weo-decision` gives you the scope-gate
+  *mechanism* (`requiresCapability` + `approved`); the *policy* that sets those
+  approvals lives in a config layer above the ontology.
+- **Filled-in taxonomies** — the actual interventions, priorities, gap types,
+  and the dimensions a tactic is scored on (impact / risk / time-to-value) with
+  their weightings. Those are `skos:Concept` schemes and instances you slot in,
+  never classes baked into the vocabulary. Ship your blend; keep the frame.
 - **Vendor vocabularies** — your CRM and analytics stack join via identity keys
   (`crmRecordRef`, `datasetUri`), never as imported schemas.
 - **Quality scores and other unfalsifiable constructs** — if it isn't an

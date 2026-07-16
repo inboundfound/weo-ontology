@@ -1,0 +1,191 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+
+# WEO Decision module — the judgment tier, made first-class.
+#
+# The top stratum of the core sample: the most interpretive layer, where an
+# observed condition becomes a diagnosed Gap, a Gap becomes candidate Tactics,
+# the scope gate filters them to what is in reach, prior Experiments say which
+# tactic has earned trust, and a Recommendation is issued — labeled, honestly,
+# as a judgment.
+#
+#   observation  ->  Diagnostic reveals Gap  ->  Gap addressableBy Tactic
+#                ->  Tactic requiresCapability (the scope gate)
+#                ->  Experiment tests Tactic, inContext Gap, producedOutcome
+#                ->  Recommendation recommends Tactic, closesGap, supportedBy Experiment
+#
+# DISCIPLINE (the whole point): this module ships CLASSES, never VALUES. `Gap`
+# and `Tactic` are here; "Citation-Waterfall stage" and "publish a comparison
+# page" are not — those are skos:Concepts and instances you slot in. The
+# specific tactic dimensions (impact / risk / time-to-value), how they are
+# weighted, and the rules that constrain an approach under given conditions live
+# one layer higher still — a strategy/agency config layer this module
+# deliberately leaves open.
+#
+# One dependency, declared honestly: unlike core/visibility/engagement (which
+# stand alone on primary web standards), this module uses SKOS as its
+# taxonomy-slot primitive — skos:Concept is where your interventions, gap types,
+# dimensions, and priorities plug in. That is the one place a foundational
+# standard is load-bearing here rather than an optional bridge.
+#
+# Every term is judgment- or derivation-tier (Experiment/Outcome carry an
+# observational core): an agent assembling only falsifiable context filters this
+# entire module out.
+
+# --- Classes ----------------------------------------------------------------
+
+weo:Diagnostic a owl:Class ;
+    rdfs:label "Diagnostic" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap." .
+
+weo:Gap a owl:Class ;
+    rdfs:label "Gap" ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology." .
+
+weo:Capability a owl:Class ;
+    rdfs:label "Capability" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses." .
+
+weo:Tactic a owl:Class ;
+    rdfs:label "Tactic" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -> TacticAssessment), and gated by the Capabilities it requires." .
+
+weo:Intervention a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Intervention" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology." .
+
+weo:TacticAssessment a owl:Class ;
+    rdfs:label "Tactic Assessment" ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method." .
+
+weo:Experiment a owl:Class ;
+    rdfs:label "Experiment" ;
+    weo:epistemicLayer "episode" ;
+    dct:description "A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from." .
+
+weo:Outcome a owl:Class ;
+    rdfs:label "Outcome" ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is a judgment, carried on the Recommendation, not asserted here." .
+
+weo:Recommendation a owl:Class ;
+    rdfs:label "Recommendation" ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. A judgment — carries method, confidence, and who/what issued it." .
+
+# --- Object properties (the chain) ------------------------------------------
+
+weo:reveals a owl:ObjectProperty ;
+    rdfs:domain weo:Diagnostic ; rdfs:range weo:Gap ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "A diagnostic asserts this gap. Carries the assessment method." .
+
+weo:evidencedBy a owl:ObjectProperty ;
+    rdfs:domain weo:Gap ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "The observed facts a gap was derived from — a Prompt's visibilityFor rollup, a URL's ranksFor, a SerpSnapshot. The seam tying the judgment tier back down to the substrate. Range left open: any observation-bearing term." .
+
+weo:gapType a owl:ObjectProperty ;
+    rdfs:domain weo:Gap ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "The kind of gap, as a slotted-in concept (e.g. a Citation-Waterfall stage). Bring your own scheme." .
+
+weo:addressableBy a owl:ObjectProperty ;
+    rdfs:domain weo:Gap ; rdfs:range weo:Tactic ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "A candidate tactic for closing this gap — a claim, made before the scope gate is applied." .
+
+weo:inIntervention a owl:ObjectProperty ;
+    rdfs:domain weo:Tactic ; rdfs:range weo:Intervention ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "The intervention category this tactic belongs to. Parallels core's inTopic." .
+
+weo:requiresCapability a owl:ObjectProperty ;
+    rdfs:domain weo:Tactic ; rdfs:range weo:Capability ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A capability that must be approved for this tactic to be in reach. The scope-gate edge: a tactic whose required capabilities are all approved is deployable; otherwise it stays advisory." .
+
+weo:assessedAs a owl:ObjectProperty ;
+    rdfs:domain weo:Tactic ; rdfs:range weo:TacticAssessment ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "Links a tactic to a per-dimension scored estimate." .
+
+weo:onDimension a owl:ObjectProperty ;
+    rdfs:domain weo:TacticAssessment ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme." .
+
+weo:tests a owl:ObjectProperty ;
+    rdfs:domain weo:Experiment ; rdfs:range weo:Tactic ;
+    weo:epistemicLayer "episode" ;
+    dct:description "The tactic this experiment put to the test." .
+
+weo:inContext a owl:ObjectProperty ;
+    rdfs:domain weo:Experiment ; rdfs:range weo:Gap ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The gap the experiment was run against. The precedent-similarity key: 'has this tactic worked on a gap like mine?' is a match on gapType through this edge." .
+
+weo:producedOutcome a owl:ObjectProperty ;
+    rdfs:domain weo:Experiment ; rdfs:range weo:Outcome ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The measured result this experiment generated." .
+
+weo:recommends a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range weo:Tactic ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The tactic this recommendation puts forward." .
+
+weo:closesGap a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range weo:Gap ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The gap this recommendation aims to close." .
+
+weo:supportedBy a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range weo:Experiment ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The precedent experiments backing this recommendation — the earned trust behind the pick." .
+
+weo:atPriority a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...)." .
+
+# --- Datatype properties -----------------------------------------------------
+# Note: weo:confidence is defined in weo-core (a 0-1 derivation confidence) and
+# is reused here on judgment edges; it is not redeclared.
+
+weo:method a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "How a judgment or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation." .
+
+weo:score a owl:DatatypeProperty ;
+    rdfs:domain weo:TacticAssessment ; rdfs:range xsd:decimal ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here." .
+
+weo:approved a owl:DatatypeProperty ;
+    rdfs:domain weo:Capability ; rdfs:range xsd:boolean ;
+    weo:epistemicLayer "judgment" ;
+    dct:description "Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else." .
+
+weo:lift a owl:DatatypeProperty ;
+    rdfs:domain weo:Outcome ; rdfs:range xsd:decimal ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The measured change the experiment recorded on its target metric." .
+
+weo:concludedAt a owl:DatatypeProperty ;
+    rdfs:domain weo:Experiment ; rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "episode" ;
+    dct:description "When the experiment concluded and its outcome became immutable." .

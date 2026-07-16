@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WEO — Web Engine Optimization ontology (terms)</title>
+<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, and decision modules.">
+<link rel="alternate" type="text/turtle" href="weo-core.ttl">
+<style>
+:root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
+  --muted:#5b5f5a; --border:#ddd8c8; --accent:#1f4d4d; --link:#1f4d4d; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0d0f0d; --surface:#141714;
+  --text:#e6e8e1; --muted:#8a9089; --border:#262a24; --accent:#5fd9c0; --link:#5fd9c0; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.wrap { max-width:900px; margin:0 auto; padding:2.5rem 1.25rem 6rem; }
+h1,h2,h3 { font-family:Charter,"Iowan Old Style",Georgia,serif; line-height:1.2; }
+h1 { font-size:2rem; margin:0 0 .25rem; }
+.tag { color:var(--muted); font-size:.9rem; }
+h2 { margin:3rem 0 1rem; padding-bottom:.35rem; border-bottom:1px solid var(--border);
+  font-size:1.4rem; }
+h2 .n, h3 .mod { color:var(--muted); font-size:.7em; font-weight:400; }
+.term { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:1rem 1.15rem; margin:.9rem 0; scroll-margin-top:1rem; }
+.term h3 { margin:0 0 .35rem; font-size:1.12rem; display:flex; align-items:center;
+  gap:.5rem; flex-wrap:wrap; }
+.term h3 .mod { margin-left:auto; }
+.iri { color:var(--muted); font-size:.82rem; }
+.term p { margin:.5rem 0 .25rem; }
+dl { margin:.5rem 0 0; border-top:1px dashed var(--border); padding-top:.5rem; }
+.row { display:flex; gap:.75rem; padding:.15rem 0; }
+.row dt { flex:0 0 8.5rem; color:var(--muted); font-size:.85rem; }
+.row dd { margin:0; font-size:.9rem; }
+a { color:var(--link); text-decoration:none; }
+a:hover { text-decoration:underline; }
+a.ext::after { content:" ↗"; font-size:.75em; opacity:.6; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+.layer { font-size:.65rem; text-transform:uppercase; letter-spacing:.04em;
+  padding:.1rem .45rem; border-radius:999px; color:#fff; background:var(--h);
+  font-family:system-ui; font-weight:600; }
+.legend { display:flex; gap:.4rem; flex-wrap:wrap; margin:1rem 0 0; }
+.lead { color:var(--muted); max-width:60ch; }
+.modnote { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  padding:.75rem 1rem; margin:1.25rem 0; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>WEO — the Web Engine Optimization ontology</h1>
+<p class="tag">Namespace <code>https://inboundfound.github.io/weo-ontology/weo#</code> · prefix <code>weo:</code> · v0.2 ·
+<a href="https://github.com/inboundfound/weo-ontology">repo</a> · CC BY 4.0</p>
+<p class="lead">One standards-grounded vocabulary for how web engines — search,
+generative, answer, conversational — see, cite, and serve content. Every term is
+typed by the kind of claim it makes; the strata run from durable bedrock to
+interpretive surface:</p>
+<div class="legend"><span class="layer" style="--h:#718096">entity</span><span class="layer" style="--h:#319795">episode</span><span class="layer" style="--h:#38A169">observation</span><span class="layer" style="--h:#805AD5">derivation</span><span class="layer" style="--h:#DD6B20">judgment</span></div>
+<div class="modnote">Modules: <code>weo-core</code> (substrate) ·
+<code>weo-visibility</code> (xEO) · <code>weo-engagement</code> (draft) ·
+<code>weo-decision</code> (judgment tier) · <code>weo-align</code> (schema.org /
+PROV-O / SKOS bridges). Machine-readable Turtle:
+<a href="weo-core.ttl">core</a>, <a href="weo-visibility.ttl">visibility</a>,
+<a href="weo-engagement.ttl">engagement</a>, <a href="weo-decision.ttl">decision</a>,
+<a href="weo-align.ttl">align</a>; JSON-LD <a href="context.jsonld">context</a>.</div>
+<h2 id="classes">Classes <span class="n">30</span></h2>
+<section id="AnswerEngine" class="term">
+  <h3>Answer Engine <span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:AnswerEngine</code>
+  <p>Assistants that answer with web search and citations (the AEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">weo:Engine</a></dd></div></dl>
+</section>
+<section id="Brand" class="term">
+  <h3>Brand <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:Brand</code>
+  <p>A named market identity that engines may mention, cite, or recommend. Distinct from Website: a brand can be visible on the whole web, not only its own origin.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Brand" class="ext">schema:Brand</a></dd></div></dl>
+</section>
+<section id="CallToAction" class="term">
+  <h3>Call To Action <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:CallToAction</code>
+  <p></p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">weo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="Capability" class="term">
+  <h3>Capability <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Capability</code>
+  <p>A lever or strength a party can bring to bear (content, technical, PR, brand, ...). The unit of the scope gate: a Tactic is in reach only when every Capability it requires is approved. Specific capabilities are instances, not subclasses.</p>
+  
+</section>
+<section id="ConversationalAgent" class="term">
+  <h3>Conversational Agent <span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:ConversationalAgent</code>
+  <p>Multi-turn agents and voice surfaces acting on a user&#x27;s behalf.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">weo:Engine</a></dd></div></dl>
+</section>
+<section id="ConversionEvent" class="term">
+  <h3>Conversion Event <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:ConversionEvent</code>
+  <p>A submission/click/unlock that happened at a time. Immutable once recorded.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="ConversionPoint" class="term">
+  <h3>Conversion Point <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:ConversionPoint</code>
+  <p>A durable on-page mechanism that turns attention into a pipeline event.</p>
+  
+</section>
+<section id="Crawl" class="term">
+  <h3>Crawl <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:Crawl</code>
+  <p>One crawl run over one Website: time-bounded, agent-attributed, immutable once finished.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="Diagnostic" class="term">
+  <h3>Diagnostic <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Diagnostic</code>
+  <p>A named, reusable check or framework that reads observations and reveals gaps (e.g. a waterfall-position assessment). The framework is durable; each finding it produces is a Gap.</p>
+  
+</section>
+<section id="Engine" class="term">
+  <h3>Engine <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:Engine</code>
+  <p>A system that mediates between a person&#x27;s question and web content. The taxonomy below is operational, not doctrinal — subclass as engines evolve.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#SoftwareAgent" class="ext">prov:SoftwareAgent</a></dd></div></dl>
+</section>
+<section id="Experiment" class="term">
+  <h3>Experiment <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Experiment</code>
+  <p>A test of a tactic that ran over a time window: immutable once concluded, method-attributed. The precedent record the decision layer learns from.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
+</section>
+<section id="Gap" class="term">
+  <h3>Gap <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Gap</code>
+  <p>A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.</p>
+  
+</section>
+<section id="GatedAsset" class="term">
+  <h3>Gated Asset <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:GatedAsset</code>
+  <p>Content exchanged for contact information.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">weo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="GenerativeEngine" class="term">
+  <h3>Generative Engine <span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:GenerativeEngine</code>
+  <p>Search-integrated generated answers — AI overviews and AI modes (the GEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">weo:Engine</a></dd></div></dl>
+</section>
+<section id="Intervention" class="term">
+  <h3>Intervention <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Intervention</code>
+  <p>A category of tactic in a controlled vocabulary you bring. A skos:Concept, so a whole intervention taxonomy slots in without touching the ontology.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="LLMResponse" class="term">
+  <h3>LLM Response <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:LLMResponse</code>
+  <p>One captured response from one engine/model for one Prompt at a moment: time-bounded, source-attributed, immutable once captured. The visibility sibling of SerpSnapshot.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="LeadCaptureForm" class="term">
+  <h3>Lead Capture Form <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:LeadCaptureForm</code>
+  <p></p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#ConversionPoint">weo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="Outcome" class="term">
+  <h3>Outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Outcome</code>
+  <p>The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is a judgment, carried on the Recommendation, not asserted here.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Prompt" class="term">
+  <h3>Prompt <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:Prompt</code>
+  <p>A tracked natural-language question posed to engines. Distinct from Term: a prompt is what a person asks; the engine&#x27;s retrieval fans out into Terms.</p>
+  
+</section>
+<section id="Recommendation" class="term">
+  <h3>Recommendation <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Recommendation</code>
+  <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. A judgment — carries method, confidence, and who/what issued it.</p>
+  
+</section>
+<section id="SearchEngine" class="term">
+  <h3>Search Engine <span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:SearchEngine</code>
+  <p>Classic ranked-results retrieval (the SEO surface).</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="#Engine">weo:Engine</a></dd></div></dl>
+</section>
+<section id="SearchIntent" class="term">
+  <h3>Search Intent <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:SearchIntent</code>
+  <p>Why the person is asking. Modeled as named individuals, not free strings.</p>
+  <dl><div class="row"><dt>grounded in</dt><dd>Broder (2002), &#x27;A taxonomy of web search&#x27;, as extended in common practice</dd></div></dl>
+</section>
+<section id="SearchPerformanceFact" class="term">
+  <h3>Search Performance Fact <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:SearchPerformanceFact</code>
+  <p>The atomic ground-truth metric row for one (websiteId, address, term, date [, device, country]) tuple. Never instantiated as graph relationships; the graph carries windowed ranksFor rollups whose datasetUri points back to the authoritative table.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/Observation" class="ext">schema:Observation</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>bigquery</dd></div></dl>
+</section>
+<section id="SerpSnapshot" class="term">
+  <h3>SERP Snapshot <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:SerpSnapshot</code>
+  <p>One observation of a search results page for a Term at a moment, for a stated engine, locale, and device.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Tactic" class="term">
+  <h3>Tactic <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:Tactic</code>
+  <p>A durable, named approach that can address gaps. Categorized by a slotted-in intervention taxonomy (inIntervention), scored on slotted-in dimensions (assessedAs -&gt; TacticAssessment), and gated by the Capabilities it requires.</p>
+  
+</section>
+<section id="TacticAssessment" class="term">
+  <h3>Tactic Assessment <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:TacticAssessment</code>
+  <p>A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method.</p>
+  
+</section>
+<section id="Term" class="term">
+  <h3>Term <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:Term</code>
+  <p>A search query string, unique by name. Data sources are attributed on observations that mention the term, never as subtypes of the term.</p>
+  
+</section>
+<section id="Topic" class="term">
+  <h3>Topic <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:Topic</code>
+  <p>A named grouping of Terms produced by a clustering or labeling process. Site-scoped. Assignments carry method, model, and confidence.</p>
+  <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="URL" class="term">
+  <h3>URL <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:URL</code>
+  <p>A resource address within a Website. Durable identity; the state of the resource at a time is recorded by Fetch observations.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebPage" class="ext">schema:WebPage</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard</dd></div></dl>
+</section>
+<section id="Website" class="term">
+  <h3>Website <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:Website</code>
+  <p>A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics.</p>
+  <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebSite" class="ext">schema:WebSite</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin)</dd></div></dl>
+</section>
+<h2 id="object-properties">Object properties <span class="n">38</span></h2>
+<section id="addressableBy" class="term">
+  <h3>addressableBy <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:addressableBy</code>
+  <p>A candidate tactic for closing this gap — a claim, made before the scope gate is applied.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">weo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div></dl>
+</section>
+<section id="assessedAs" class="term">
+  <h3>assessedAs <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:assessedAs</code>
+  <p>Links a tactic to a per-dimension scored estimate.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div></dl>
+</section>
+<section id="atPriority" class="term">
+  <h3>atPriority <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:atPriority</code>
+  <p>Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="attributedResponse" class="term">
+  <h3>attributedResponse <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:attributedResponse</code>
+  <p>The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">weo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div></dl>
+</section>
+<section id="capturedBy" class="term">
+  <h3>capturedBy <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:capturedBy</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">weo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">weo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="childOf" class="term">
+  <h3>childOf <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:childOf</code>
+  <p>Topic childOf Topic: the child points to its broader parent, matching skos:broader.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/2004/02/skos/core#broader" class="ext">skos:broader</a></dd></div></dl>
+</section>
+<section id="cites" class="term">
+  <h3>cites <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:cites</code>
+  <p>The response grounded on this URL, per the engine&#x27;s own citation annotations. Carries citationRank where the engine orders its sources. The visibility sibling of hasResult.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
+</section>
+<section id="closesGap" class="term">
+  <h3>closesGap <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:closesGap</code>
+  <p>The gap this recommendation aims to close.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">weo:Gap</a></dd></div></dl>
+</section>
+<section id="evidencedBy" class="term">
+  <h3>evidencedBy <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:evidencedBy</code>
+  <p>The observed facts a gap was derived from — a Prompt&#x27;s visibilityFor rollup, a URL&#x27;s ranksFor, a SerpSnapshot. The seam tying the judgment tier back down to the substrate. Range left open: any observation-bearing term.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">weo:Gap</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
+<section id="fansOutTo" class="term">
+  <h3>fansOutTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:fansOutTo</code>
+  <p>A retrieval query the engine reported issuing while answering this prompt. Fan-out queries ARE Terms — the join between the xEO layer and classic rank data. Carries the reporting engine and capture episode.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine-reported retrieval queries (per-provider API contract)</dd></div></dl>
+</section>
+<section id="fetched" class="term">
+  <h3>fetched <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:fetched</code>
+  <p>An HTTP fetch of a URL within a crawl. In the property graph this relationship carries statusCode, contentType, title, metaDescription, robotsMeta, contentHash, fetchedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Crawl">weo:Crawl</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 (HTTP Semantics)</dd></div></dl>
+</section>
+<section id="gapType" class="term">
+  <h3>gapType <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:gapType</code>
+  <p>The kind of gap, as a slotted-in concept (e.g. a Citation-Waterfall stage). Bring your own scheme.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">weo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="hasCanonical" class="term">
+  <h3>hasCanonical <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:hasCanonical</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 6596 (The Canonical Link Relation)</dd></div></dl>
+</section>
+<section id="hasConversionPoint" class="term">
+  <h3>hasConversionPoint <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:hasConversionPoint</code>
+  <p>Observed presence of a conversion point on a page (crawl-attributed, bitemporal like linksTo).</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#ConversionPoint">weo:ConversionPoint</a></dd></div></dl>
+</section>
+<section id="hasCrawl" class="term">
+  <h3>hasCrawl <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:hasCrawl</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Crawl">weo:Crawl</a></dd></div></dl>
+</section>
+<section id="hasResponse" class="term">
+  <h3>hasResponse <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:hasResponse</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div></dl>
+</section>
+<section id="hasResult" class="term">
+  <h3>hasResult <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:hasResult</code>
+  <p>A result observed on the SERP. Carries position and resultType.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">weo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div></dl>
+</section>
+<section id="hasSnapshot" class="term">
+  <h3>hasSnapshot <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:hasSnapshot</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#SerpSnapshot">weo:SerpSnapshot</a></dd></div></dl>
+</section>
+<section id="inContext" class="term">
+  <h3>inContext <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:inContext</code>
+  <p>The gap the experiment was run against. The precedent-similarity key: &#x27;has this tactic worked on a gap like mine?&#x27; is a match on gapType through this edge.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">weo:Gap</a></dd></div></dl>
+</section>
+<section id="inIntervention" class="term">
+  <h3>inIntervention <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:inIntervention</code>
+  <p>The intervention category this tactic belongs to. Parallels core&#x27;s inTopic.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Intervention">weo:Intervention</a></dd></div></dl>
+</section>
+<section id="inTopic" class="term">
+  <h3>inTopic <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:inTopic</code>
+  <p>Process-attributed topic assignment. Carries method, model, confidence, assignedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/about" class="ext">schema:about</a></dd></div></dl>
+</section>
+<section id="linksTo" class="term">
+  <h3>linksTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:linksTo</code>
+  <p>An observed hyperlink. Carries anchorText, rel, firstSeenAt, lastSeenAt, lastSeenCrawlId.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1 (the a element)</dd></div></dl>
+</section>
+<section id="mentions" class="term">
+  <h3>mentions <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:mentions</code>
+  <p>The brand&#x27;s name appears in the response text. Carries mentionRank (order of first appearance) — high mention counts at poor ranks are the &#x27;named among twelve, championed never&#x27; pattern. Extraction method (string match, NER model) must be recorded; model-extracted mentions are derivations, not observations.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">weo:Brand</a></dd></div></dl>
+</section>
+<section id="onDimension" class="term">
+  <h3>onDimension <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:onDimension</code>
+  <p>The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="onEngine" class="term">
+  <h3>onEngine <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:onEngine</code>
+  <p>Which engine (and, via model/modelVersion properties, which model) produced this response.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Engine">weo:Engine</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasAttributedTo" class="ext">prov:wasAttributedTo</a></dd></div></dl>
+</section>
+<section id="partOf" class="term">
+  <h3>partOf <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:partOf</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">weo:Website</a></dd></div></dl>
+</section>
+<section id="producedOutcome" class="term">
+  <h3>producedOutcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:producedOutcome</code>
+  <p>The measured result this experiment generated.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Outcome">weo:Outcome</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generated" class="ext">prov:generated</a></dd></div></dl>
+</section>
+<section id="ranksFor" class="term">
+  <h3>ranksFor <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:ranksFor</code>
+  <p>Windowed rollup projection of SearchPerformanceFacts for a (page, query) pair. Carries clicks, impressions, ctr, avgPosition, periodStart, periodEnd, source, datasetUri, syncedAt.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<section id="recommends" class="term">
+  <h3>recommends <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:recommends</code>
+  <p>The tactic this recommendation puts forward.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div></dl>
+</section>
+<section id="redirectsTo" class="term">
+  <h3>redirectsTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:redirectsTo</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §15.4 (Redirection 3xx)</dd></div></dl>
+</section>
+<section id="requiresCapability" class="term">
+  <h3>requiresCapability <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:requiresCapability</code>
+  <p>A capability that must be approved for this tactic to be in reach. The scope-gate edge: a tactic whose required capabilities are all approved is deployable; otherwise it stays advisory.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Capability">weo:Capability</a></dd></div></dl>
+</section>
+<section id="reveals" class="term">
+  <h3>reveals <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:reveals</code>
+  <p>A diagnostic asserts this gap. Carries the assessment method.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">weo:Diagnostic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">weo:Gap</a></dd></div></dl>
+</section>
+<section id="scopedTo" class="term">
+  <h3>scopedTo <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:scopedTo</code>
+  <p>Topics are scoped to a Website rather than a free-standing ConceptScheme; skos:inScheme is the analogous grouping.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="http://www.w3.org/2004/02/skos/core#inScheme" class="ext">skos:inScheme</a></dd></div></dl>
+</section>
+<section id="supportedBy" class="term">
+  <h3>supportedBy <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:supportedBy</code>
+  <p>The precedent experiments backing this recommendation — the earned trust behind the pick.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
+</section>
+<section id="targetsIntent" class="term">
+  <h3>targetsIntent <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:targetsIntent</code>
+  <p>A URL or Prompt is aimed at this intent. A strategist&#x27;s or model&#x27;s claim — carries method and confidence.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="#SearchIntent">weo:SearchIntent</a></dd></div></dl>
+</section>
+<section id="tests" class="term">
+  <h3>tests <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:tests</code>
+  <p>The tactic this experiment put to the test.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div></dl>
+</section>
+<section id="tracksPrompt" class="term">
+  <h3>tracksPrompt <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:tracksPrompt</code>
+  <p>This tenant tracks this prompt. Tenancy is data, not schema.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div></dl>
+</section>
+<section id="visibilityFor" class="term">
+  <h3>visibilityFor <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:visibilityFor</code>
+  <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">weo:Brand</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
+</section>
+<h2 id="datatype-properties">Datatype properties <span class="n">23</span></h2>
+<section id="address" class="term">
+  <h3>address <span class="mod">weo-core</span></h3>
+  <code class="iri">weo:address</code>
+  <p>The serialized absolute URL is a schema:url value.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="https://schema.org/url" class="ext">schema:url</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (serialized absolute URL)</dd></div></dl>
+</section>
+<section id="anchorText" class="term">
+  <h3>anchorText <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:anchorText</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1</dd></div></dl>
+</section>
+<section id="approved" class="term">
+  <h3>approved <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:approved</code>
+  <p>Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Capability">weo:Capability</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<section id="avgPosition" class="term">
+  <h3>avgPosition <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:avgPosition</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="capturedAt" class="term">
+  <h3>capturedAt <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:capturedAt</code>
+  <p>The response record was generated at capture time.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generatedAtTime" class="ext">prov:generatedAtTime</a></dd></div></dl>
+</section>
+<section id="citationRate" class="term">
+  <h3>citationRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:citationRate</code>
+  <p>Share of captured responses in the window that cite the brand&#x27;s owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+</section>
+<section id="clicks" class="term">
+  <h3>clicks <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:clicks</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="concludedAt" class="term">
+  <h3>concludedAt <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:concludedAt</code>
+  <p>When the experiment concluded and its outcome became immutable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#endedAtTime" class="ext">prov:endedAtTime</a></dd></div></dl>
+</section>
+<section id="confidence" class="term">
+  <h3>confidence <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:confidence</code>
+  <p>0-1 confidence attached to a derivation edge.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+</section>
+<section id="crmRecordRef" class="term">
+  <h3>crmRecordRef <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:crmRecordRef</code>
+  <p>Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM&#x27;s schema.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+</section>
+<section id="embeddingModel" class="term">
+  <h3>embeddingModel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:embeddingModel</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="embeddingRef" class="term">
+  <h3>embeddingRef <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:embeddingRef</code>
+  <p>Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>vector-store</dd></div></dl>
+</section>
+<section id="impressions" class="term">
+  <h3>impressions <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:impressions</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="lift" class="term">
+  <h3>lift <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:lift</code>
+  <p>The measured change the experiment recorded on its target metric.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Outcome">weo:Outcome</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="mentionRank" class="term">
+  <h3>mentionRank <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:mentionRank</code>
+  <p>1-based order of the brand&#x27;s first appearance in the response text. Carried on mentions edges.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="mentionRate" class="term">
+  <h3>mentionRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:mentionRate</code>
+  <p>Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+</section>
+<section id="method" class="term">
+  <h3>method <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:method</code>
+  <p>How a judgment or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="model" class="term">
+  <h3>model <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:model</code>
+  <p>Model identifier + version as reported at capture time. Without this the episode is not comparable across time.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="occurredAt" class="term">
+  <h3>occurredAt <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:occurredAt</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">weo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="origin" class="term">
+  <h3>origin <span class="mod">weo-core</span></h3>
+  <code class="iri">weo:origin</code>
+  <p></p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
+</section>
+<section id="score" class="term">
+  <h3>score <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <code class="iri">weo:score</code>
+  <p>The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="statusCode" class="term">
+  <h3>statusCode <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:statusCode</code>
+  <p></p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §15 (Status Codes)</dd></div></dl>
+</section>
+<section id="webSearchEnabled" class="term">
+  <h3>webSearchEnabled <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:webSearchEnabled</code>
+  <p>Whether the engine could search the web for this response. Citation behavior differs sharply with this flag; never pool across it silently.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<h2 id="annotation-properties">Annotation properties <span class="n">3</span></h2>
+<section id="canonicalStore" class="term">
+  <h3>canonicalStore <span class="mod">weo-core</span></h3>
+  <code class="iri">weo:canonicalStore</code>
+  <p>Where this term&#x27;s instances authoritatively live: neo4j, bigquery, vector-store, crm. The ontology is storage-agnostic; identity keys (websiteId, address, term name, date) join across stores.</p>
+  
+</section>
+<section id="epistemicLayer" class="term">
+  <h3>epistemicLayer <span class="mod">weo-core</span></h3>
+  <code class="iri">weo:epistemicLayer</code>
+  <p>One of: entity, episode, observation, derivation, judgment. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce judgment-layer terms and must mark them.</p>
+  
+</section>
+<section id="groundedIn" class="term">
+  <h3>groundedIn <span class="mod">weo-core</span></h3>
+  <code class="iri">weo:groundedIn</code>
+  <p>The primary standard or API contract that defines this term&#x27;s meaning.</p>
+  
+</section>
+<h2 id="individuals">Individuals <span class="n">4</span></h2>
+<section id="CommercialInvestigation" class="term">
+  <h3>Commercial Investigation <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:CommercialInvestigation</code>
+  <p></p>
+  
+</section>
+<section id="Informational" class="term">
+  <h3>Informational <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:Informational</code>
+  <p></p>
+  
+</section>
+<section id="Navigational" class="term">
+  <h3>Navigational <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:Navigational</code>
+  <p></p>
+  
+</section>
+<section id="Transactional" class="term">
+  <h3>Transactional <span class="mod">weo-engagement</span></h3>
+  <code class="iri">weo:Transactional</code>
+  <p></p>
+  
+</section>
+</div>
+</body>
+</html>

@@ -99,3 +99,30 @@ weo:childOf rdfs:subPropertyOf skos:broader ;
 
 weo:scopedTo rdfs:seeAlso skos:inScheme ;
     rdfs:comment "Topics are scoped to a Website rather than a free-standing ConceptScheme; skos:inScheme is the analogous grouping." .
+
+# ===========================================================================
+# Decision layer (weo-decision.ttl) — PROV-O bridges. The precedent chain is
+# provenance: an Experiment is a process, its Outcome the entity it generated,
+# and a Gap / Recommendation is derived from the evidence and experiments behind
+# it. (The decision module also uses skos:Concept directly for its taxonomy
+# slots — gapType, inIntervention, onDimension, atPriority — but that is a
+# load-bearing primitive declared in the module itself, not an optional bridge.)
+# ===========================================================================
+
+weo:Experiment rdfs:subClassOf prov:Activity ;
+    rdfs:comment "An experiment is a process that ran over a period, testing a tactic." .
+
+weo:Outcome rdfs:subClassOf prov:Entity ;
+    rdfs:comment "An outcome is the measured record an experiment generated." .
+
+weo:producedOutcome rdfs:subPropertyOf prov:generated ;
+    rdfs:comment "The experiment (activity) generated this outcome (entity)." .
+
+weo:concludedAt rdfs:subPropertyOf prov:endedAtTime ;
+    rdfs:comment "When the experiment activity ended." .
+
+weo:evidencedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:comment "A gap is derived from the observations behind it." .
+
+weo:supportedBy rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:comment "A recommendation is derived from the precedent experiments that back it." .
