@@ -44,6 +44,8 @@ acronyms.
 | `weo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
 | `weo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
 | `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled judgment) |
+| `weo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
+| `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
 | `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for all three modules |
 
 The core module is the stable substrate. Visibility is field-tested against a
@@ -100,6 +102,39 @@ WHERE r.capturedAt < e.occurredAt <= r.capturedAt + duration('P7D')
 RETURN e.id, cp.crmRecordRef, collect(r.id) AS candidate_responses;
 ```
 
+## Interoperability — stands alone, bridges out
+
+WEO has **no hard dependency**: core, visibility, and engagement load and reason
+with zero external vocabularies present. It grounds its own terms in primary
+standards (HTTP, WHATWG, the GSC API) rather than borrowing another SEO ontology.
+
+For anyone who already speaks the foundational web vocabularies, `weo-align.ttl`
+is an **optional crosswalk** — alignments, not imports:
+
+- **schema.org** (the neutral base for web entities): `Website`→`schema:WebSite`,
+  `URL`→`schema:WebPage`, `Brand`→`schema:Brand`, `SearchPerformanceFact`→`schema:Observation`.
+  Two calibrated choices keep the bridges honest: `weo:URL` is a `skos:closeMatch`
+  (not an equivalence) to `schema:WebPage`, because WEO deliberately keeps the
+  address (entity) separate from the page's rendered state (a Fetch observation);
+  metrics map to `schema:Observation`, never a reified score class.
+- **PROV-O** (the provenance spine): WEO's epistemic layering *is* provenance.
+  `Crawl` is a `prov:Activity`, `Engine` a `prov:SoftwareAgent`, a captured
+  `LLMResponse` a `prov:Entity` attributed (`onEngine`→`prov:wasAttributedTo`) to
+  the engine that generated it.
+- **SKOS** (the taxonomy spine): `Topic` is a `skos:Concept`, `childOf` is
+  `skos:broader`. This is the seam where users slot in their **own** concept
+  scheme — of topics, gaps, or funnel stages — without editing the ontology.
+
+Alignment uses `skos:closeMatch` where the correspondence is approximate (no
+forced logical entailment) and `rdfs:subClassOf`/`subPropertyOf` only where a WEO
+term is a genuine specialization. The bridges assert nothing false and can be
+ignored entirely.
+
+`context.jsonld` is the operational half: point it at a Neo4j export and the
+graph's labels, relationship types, and properties become valid RDF/JSON-LD —
+object properties resolve to node references, datatype properties carry their
+`xsd` types. Legible names in the graph, real IRIs on export.
+
 ## What is deliberately NOT here
 
 - **Judgment/decision machinery** (recommendations, playbooks, experiments,
@@ -117,9 +152,17 @@ RETURN e.id, cp.crmRecordRef, collect(r.id) AS candidate_responses;
 cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
-The TTL files are plain OWL — load them into any triple store or ontology
-editor. The namespace is served from GitHub Pages; a persistent-identifier
-redirect (w3id.org) may be added later without changing term local names.
+The TTL files are plain OWL — load `weo-core`, `weo-visibility`,
+`weo-engagement`, and (if you want the crosswalk) `weo-align` into any triple
+store or ontology editor. To publish graph data as linked data, serve your
+Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
+
+**Namespace.** Terms currently resolve under GitHub Pages
+(`https://inboundfound.github.io/weo-ontology/weo#`). The intended permanent home
+is **weoontology.org** — served with content negotiation so each term IRI
+resolves to human docs (HTML) or the ontology (Turtle). Local term names never
+change, so a w3id.org-style redirect can front either host without breaking any
+published IRI.
 
 ## Maintained by
 
