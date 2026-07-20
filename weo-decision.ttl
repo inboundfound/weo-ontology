@@ -5,13 +5,13 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
 
-# WEO Decision module — the judgment tier, made first-class.
+# WEO Decision module — the interpretation tier, made first-class.
 #
 # The top stratum of the core sample: the most interpretive layer, where an
 # observed condition becomes a diagnosed Gap, a Gap becomes candidate Tactics,
 # the scope gate filters them to what is in reach, prior Experiments say which
 # tactic has earned trust, and a Recommendation is issued — labeled, honestly,
-# as a judgment.
+# as an interpretation.
 #
 #   observation  ->  Diagnostic reveals Gap  ->  Gap addressableBy Tactic
 #                ->  Tactic requiresCapability (the scope gate)
@@ -32,7 +32,7 @@
 # dimensions, and priorities plug in. That is the one place a foundational
 # standard is load-bearing here rather than an optional bridge.
 #
-# Every term is judgment- or derivation-tier (Experiment/Outcome carry an
+# Every term is interpretation- or derivation-tier (Experiment/Outcome carry an
 # observational core): an agent assembling only falsifiable context filters this
 # entire module out.
 
@@ -45,7 +45,7 @@ weo:Diagnostic a owl:Class ;
 
 weo:Gap a owl:Class ;
     rdfs:label "Gap" ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology." .
 
 weo:Capability a owl:Class ;
@@ -66,7 +66,7 @@ weo:Intervention a owl:Class ;
 
 weo:TacticAssessment a owl:Class ;
     rdfs:label "Tactic Assessment" ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method." .
 
 weo:Experiment a owl:Class ;
@@ -77,24 +77,24 @@ weo:Experiment a owl:Class ;
 weo:Outcome a owl:Class ;
     rdfs:label "Outcome" ;
     weo:epistemicLayer "observation" ;
-    dct:description "The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is a judgment, carried on the Recommendation, not asserted here." .
+    dct:description "The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here." .
 
 weo:Recommendation a owl:Class ;
     rdfs:label "Recommendation" ;
-    weo:epistemicLayer "judgment" ;
-    dct:description "The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. A judgment — carries method, confidence, and who/what issued it." .
+    weo:epistemicLayer "interpretation" ;
+    dct:description "The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it." .
 
 # --- Object properties (the chain) ------------------------------------------
 
 weo:reveals a owl:ObjectProperty ;
     rdfs:domain weo:Diagnostic ; rdfs:range weo:Gap ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "A diagnostic asserts this gap. Carries the assessment method." .
 
 weo:evidencedBy a owl:ObjectProperty ;
     rdfs:domain weo:Gap ;
     weo:epistemicLayer "derivation" ;
-    dct:description "The observed facts a gap was derived from — a Prompt's visibilityFor rollup, a URL's ranksFor, a SerpSnapshot. The seam tying the judgment tier back down to the substrate. Range left open: any observation-bearing term." .
+    dct:description "The observed facts a gap was derived from — a Prompt's visibilityFor rollup, a URL's ranksFor, a SerpSnapshot. The seam tying the interpretation tier back down to the substrate. Range left open: any observation-bearing term." .
 
 weo:gapType a owl:ObjectProperty ;
     rdfs:domain weo:Gap ; rdfs:range skos:Concept ;
@@ -103,7 +103,7 @@ weo:gapType a owl:ObjectProperty ;
 
 weo:addressableBy a owl:ObjectProperty ;
     rdfs:domain weo:Gap ; rdfs:range weo:Tactic ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "A candidate tactic for closing this gap — a claim, made before the scope gate is applied." .
 
 weo:inIntervention a owl:ObjectProperty ;
@@ -118,12 +118,12 @@ weo:requiresCapability a owl:ObjectProperty ;
 
 weo:assessedAs a owl:ObjectProperty ;
     rdfs:domain weo:Tactic ; rdfs:range weo:TacticAssessment ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "Links a tactic to a per-dimension scored estimate." .
 
 weo:onDimension a owl:ObjectProperty ;
     rdfs:domain weo:TacticAssessment ; rdfs:range skos:Concept ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme." .
 
 weo:tests a owl:ObjectProperty ;
@@ -143,41 +143,41 @@ weo:producedOutcome a owl:ObjectProperty ;
 
 weo:recommends a owl:ObjectProperty ;
     rdfs:domain weo:Recommendation ; rdfs:range weo:Tactic ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The tactic this recommendation puts forward." .
 
 weo:closesGap a owl:ObjectProperty ;
     rdfs:domain weo:Recommendation ; rdfs:range weo:Gap ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The gap this recommendation aims to close." .
 
 weo:supportedBy a owl:ObjectProperty ;
     rdfs:domain weo:Recommendation ; rdfs:range weo:Experiment ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The precedent experiments backing this recommendation — the earned trust behind the pick." .
 
 weo:atPriority a owl:ObjectProperty ;
     rdfs:domain weo:Recommendation ; rdfs:range skos:Concept ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...)." .
 
 # --- Datatype properties -----------------------------------------------------
 # Note: weo:confidence is defined in weo-core (a 0-1 derivation confidence) and
-# is reused here on judgment edges; it is not redeclared.
+# is reused here on interpretation edges; it is not redeclared.
 
 weo:method a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
-    weo:epistemicLayer "judgment" ;
-    dct:description "How a judgment or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation." .
+    weo:epistemicLayer "interpretation" ;
+    dct:description "How an interpretation or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation." .
 
 weo:score a owl:DatatypeProperty ;
     rdfs:domain weo:TacticAssessment ; rdfs:range xsd:decimal ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here." .
 
 weo:approved a owl:DatatypeProperty ;
     rdfs:domain weo:Capability ; rdfs:range xsd:boolean ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else." .
 
 weo:lift a owl:DatatypeProperty ;

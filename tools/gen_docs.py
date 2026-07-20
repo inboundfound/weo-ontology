@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NS = "https://inboundfound.github.io/weo-ontology/weo#"
 MODULES = [
     "weo-core.ttl", "weo-visibility.ttl", "weo-engagement.ttl",
-    "weo-decision.ttl", "weo-align.ttl",
+    "weo-decision.ttl", "weo-strategy.ttl", "weo-align.ttl",
 ]
 EPI = URIRef(NS + "epistemicLayer")
 GROUNDED = URIRef(NS + "groundedIn")
@@ -33,10 +33,10 @@ PREFIXES = {
     "http://www.w3.org/2000/01/rdf-schema#": "rdfs:",
     "http://purl.org/dc/terms/": "dct:",
 }
-LAYERS = ["entity", "episode", "observation", "derivation", "judgment"]
+LAYERS = ["entity", "episode", "observation", "derivation", "interpretation", "norm"]
 LAYER_HUE = {  # the stratigraphic palette
     "entity": "#718096", "episode": "#319795", "observation": "#38A169",
-    "derivation": "#805AD5", "judgment": "#DD6B20",
+    "derivation": "#805AD5", "interpretation": "#DD6B20", "norm": "#D69E2E",
 }
 
 
@@ -138,7 +138,7 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WEO — Web Engine Optimization ontology (terms)</title>
-<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, and decision modules.">
+<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
 <link rel="alternate" type="text/turtle" href="weo-core.ttl">
 <style>
 :root {{ color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -191,11 +191,12 @@ interpretive surface:</p>
 <div class="legend">{legend}</div>
 <div class="modnote">Modules: <code>weo-core</code> (substrate) ·
 <code>weo-visibility</code> (xEO) · <code>weo-engagement</code> (draft) ·
-<code>weo-decision</code> (judgment tier) · <code>weo-align</code> (schema.org /
-PROV-O / SKOS bridges). Machine-readable Turtle:
+<code>weo-decision</code> (interpretation tier) · <code>weo-strategy</code> (norms tier) ·
+<code>weo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="weo-core.ttl">core</a>, <a href="weo-visibility.ttl">visibility</a>,
 <a href="weo-engagement.ttl">engagement</a>, <a href="weo-decision.ttl">decision</a>,
-<a href="weo-align.ttl">align</a>; JSON-LD <a href="context.jsonld">context</a>.</div>
+<a href="weo-strategy.ttl">strategy</a>, <a href="weo-align.ttl">align</a>;
+JSON-LD <a href="context.jsonld">context</a>.</div>
 {classes}
 {objprops}
 {dataprops}

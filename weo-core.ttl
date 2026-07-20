@@ -10,14 +10,14 @@
 
 weo: a owl:Ontology ;
     dct:title "WEO Core Ontology (Web Engine Optimization)" ;
-    dct:description "Standards-grounded observation layer for web-engine data in a property graph. WEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Judgments and decisions are modeled in higher layers." ;
+    dct:description "Standards-grounded observation layer for web-engine data in a property graph. WEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Interpretations and decisions are modeled in higher layers." ;
     dct:creator "Inbound Found" ;
     owl:versionInfo "0.2.0" .
 
 # --- Annotation properties -------------------------------------------------
 
 weo:epistemicLayer a owl:AnnotationProperty ;
-    rdfs:comment "One of: entity, episode, observation, derivation, judgment. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce judgment-layer terms and must mark them." .
+    rdfs:comment "One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce interpretation- or norm-layer terms and must mark them." .
 
 weo:groundedIn a owl:AnnotationProperty ;
     rdfs:comment "The primary standard or API contract that defines this term's meaning." .

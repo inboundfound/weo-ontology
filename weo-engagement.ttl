@@ -12,8 +12,8 @@
 # vocabularies — the CRM record is referenced by identity key (crmRecordRef),
 # never mirrored as a vendor vocabulary dependency.
 #
-# This module deliberately introduces judgment-layer terms (targetsIntent,
-# attributedResponse). Judgments carry method and confidence; they are claims,
+# This module deliberately introduces interpretation-layer terms (targetsIntent,
+# attributedResponse). Interpretations carry method and confidence; they are claims,
 # not facts, and agents assembling context can filter them out.
 
 # --- Intent ------------------------------------------------------------------
@@ -31,7 +31,7 @@ weo:Transactional a weo:SearchIntent ; rdfs:label "Transactional" .
 
 weo:targetsIntent a owl:ObjectProperty ;
     rdfs:range weo:SearchIntent ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "A URL or Prompt is aimed at this intent. A strategist's or model's claim — carries method and confidence." .
 
 # --- Conversion points (entities on the page) ---------------------------------
@@ -77,9 +77,9 @@ weo:crmRecordRef a owl:DatatypeProperty ;
     weo:canonicalStore "crm" ;
     dct:description "Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM's schema." .
 
-# --- Pre-click attribution (a judgment, and labeled as one) -------------------
+# --- Pre-click attribution (an interpretation, and labeled as one) --------------
 
 weo:attributedResponse a owl:ObjectProperty ;
     rdfs:domain weo:ConversionEvent ; rdfs:range weo:LLMResponse ;
-    weo:epistemicLayer "judgment" ;
+    weo:epistemicLayer "interpretation" ;
     dct:description "The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse." .

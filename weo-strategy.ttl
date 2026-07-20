@@ -1,0 +1,135 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix weo:  <https://inboundfound.github.io/weo-ontology/weo#> .
+
+# WEO Strategy module — the norms tier: how recommendations are governed.
+#
+# The layer weo-decision deliberately left open. weo-decision produces a
+# Recommendation (deploy this Tactic to close this Gap). This module governs HOW
+# that recommendation is allowed to be made: the standing rules — best practices,
+# SOPs, lessons learned — that veto, reorder, or caveat a candidate before it
+# reaches a human, plus the reusable Playbooks those rules travel in and the
+# tenancy axis that decides whose rules win.
+#
+#   Practice constrains Recommendation                (a rule acts on a candidate)
+#   Practice appliesToConcept <role | intervention | gapType | capability>  (its scope)
+#   Recommendation appliedPractice Practice           (audit: the rule fired, and why)
+#   Playbook includes <Diagnostic | Tactic | Practice> ; tenancy activates Playbook
+#
+# THE NORM STRATUM (introduced here). Core types every term by the kind of claim
+# it makes: entity / episode / observation / derivation, and the decision layer
+# adds its interpretive calls on top. All of those describe what IS, or what is
+# inferred to be. A norm is a different kind of claim: what SHOULD govern a
+# choice — reusable across cases, authored by a person or earned from
+# experiments, and revisable. It stands above a single decision: one
+# Recommendation is a call about one case; a Practice is a norm about a class of
+# cases. This is a new epistemic stratum; core's epistemicLayer note should be
+# extended to list "norm".
+#
+# DISCIPLINE (unchanged from decision): this module ships CLASSES, never VALUES.
+# Practice, Playbook, and the norm relations are here. "Never 301 a paginated
+# archive," "prefer topically-relevant internal links," the page-role vocabulary,
+# and the tenancy hierarchy (agency / client / engagement / campaign) are
+# skos:Concepts and instances you slot in — not subclasses baked into the ontology.
+#
+# DEPENDENCIES, declared honestly. Unlike core / visibility / engagement (which
+# stand alone on primary web standards), this module builds on weo-decision — it
+# governs its Recommendation, Tactic, Diagnostic, and Capability — and, like
+# decision, uses SKOS as its slot primitive (appliesToConcept, hasRole,
+# appliesAtScope). An agent assembling only falsifiable context filters this
+# whole module out.
+
+# --- Classes ----------------------------------------------------------------
+
+weo:Practice a owl:Class ;
+    rdfs:label "Practice" ;
+    weo:epistemicLayer "norm" ;
+    dct:description "A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice)." .
+
+weo:Playbook a owl:Class ;
+    rdfs:label "Playbook" ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an 'SEO playbook', an 'AEO playbook', a 'local playbook'. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself." .
+
+# --- Object properties -------------------------------------------------------
+
+weo:constrains a owl:ObjectProperty ;
+    rdfs:domain weo:Practice ; rdfs:range weo:Recommendation ;
+    weo:epistemicLayer "norm" ;
+    dct:description "The Practice governs recommendations matching its conditions — vetoing, reordering, or caveating per its practiceKind. Which recommendations 'match' is set by appliesToConcept." .
+
+weo:appliesToConcept a owl:ObjectProperty ;
+    rdfs:domain weo:Practice ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "norm" ;
+    dct:description "Binds a Practice to the slotted-in concepts it applies to — a page role (hasRole), an Intervention, a gapType, a Capability. Bring your own schemes; the Practice fires only where a candidate carries a matching concept." .
+
+weo:appliedPractice a owl:ObjectProperty ;
+    rdfs:domain weo:Recommendation ; rdfs:range weo:Practice ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged." .
+
+weo:supersedes a owl:ObjectProperty ;
+    rdfs:domain weo:Practice ; rdfs:range weo:Practice ;
+    weo:epistemicLayer "norm" ;
+    dct:description "This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status 'deprecated', never deleted) — the version chain that makes the norms layer revisable and auditable." .
+
+weo:includes a owl:ObjectProperty ;
+    rdfs:domain weo:Playbook ;
+    weo:epistemicLayer "entity" ;
+    dct:description "A Diagnostic, Tactic, or Practice bundled into this Playbook. Range left open across the three decision/norm terms it may hold." .
+
+weo:activates a owl:ObjectProperty ;
+    rdfs:range weo:Playbook ;
+    weo:epistemicLayer "norm" ;
+    dct:description "A tenancy context puts a Playbook into effect for a body of work. Domain left open: model your own tenancy node (agency, client, engagement, campaign) and point it here — this module stays agnostic about the account hierarchy, which is expressed through appliesAtScope." .
+
+weo:hasRole a owl:ObjectProperty ;
+    rdfs:domain weo:URL ; rdfs:range skos:Concept ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "The structural role a URL plays on its site, as a slotted-in concept. A recommended starter scheme is coarse and purpose-based: brand-core (home, about), commercial (services, products, sales), content (articles, marketing), infrastructure (pagination, archives, tag and category indexes). Assignment is a DERIVATION from graph and crawl structure — inbound link_position, index-vs-leaf link patterns, template similarity — not URL-string matching; it carries method and confidence, and 'unknown' is a valid, conservative state. Parallels core's inTopic. Norms bind to these roles via appliesToConcept, so 'never redirect an infrastructure page for ranking' is a rule over a role, not a growing list of regexes." .
+
+weo:authoredBy a owl:ObjectProperty ;
+    rdfs:domain weo:Practice ;
+    weo:epistemicLayer "norm" ;
+    dct:description "The party that authored a Practice (or an activation or override). Range left open — a person, an agency, the system, or a prov:Agent in your own graph. One half of the customization axis: with appliesAtScope, it decides whose rule wins." .
+
+weo:appliesAtScope a owl:ObjectProperty ;
+    rdfs:range skos:Concept ;
+    weo:epistemicLayer "norm" ;
+    dct:description "The tenancy level at which a Practice (or activation or override) applies, as a slotted-in concept. A recommended hierarchy is default < agency < client < engagement < campaign < user. Domain left open so it can annotate any strategy-layer assertion. Resolution is most-specific-wins: a client-level Practice overrides an agency default, which overrides the shipped default. This is the 'customization' axis — not a lens, a specificity ladder." .
+
+# --- Datatype properties -----------------------------------------------------
+# Reuses weo:confidence (0-1) and weo:method from core; neither is redeclared.
+
+weo:statement a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    weo:epistemicLayer "norm" ;
+    dct:description "The rule in plain language, as a human authored or confirmed it — e.g. 'Never 301 a paginated archive URL for ranking purposes.' The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable." .
+
+weo:practiceKind a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    weo:epistemicLayer "norm" ;
+    dct:description "How the Practice acts: 'guardrail' (veto a matching candidate), 'preference' (reorder it), or 'guidance' (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass." .
+
+weo:source a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    weo:epistemicLayer "norm" ;
+    dct:description "Where the Practice came from: 'authored' (a human SOP or best-practice — high standing, durable), 'learned' (earned from the experiment ledger — confidence ratchets with Outcomes), or 'claimed' (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it). Lets one class hold a firm SOP and a fragile claim without conflating their trust." .
+
+weo:status a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    weo:epistemicLayer "norm" ;
+    dct:description "Lifecycle state: 'proposed', 'active', or 'deprecated'. A proposed Practice is visible but does not fire; superseding one deprecates it." .
+
+weo:rationale a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    weo:epistemicLayer "norm" ;
+    dct:description "Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent." .
+
+weo:halfLife a owl:DatatypeProperty ;
+    rdfs:domain weo:Practice ; rdfs:range xsd:duration ;
+    weo:epistemicLayer "norm" ;
+    dct:description "Optional decay window for a Practice whose source is 'claimed': how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today's answer-engine tactics may not survive the year — a claim nobody's experiments confirm ages out on its own." .

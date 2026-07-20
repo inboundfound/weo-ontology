@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WEO — Web Engine Optimization ontology (terms)</title>
-<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, and decision modules.">
+<meta name="description" content="Term reference for the WEO ontology: classes, properties, and individuals across the core, visibility, engagement, decision, and strategy modules.">
 <link rel="alternate" type="text/turtle" href="weo-core.ttl">
 <style>
 :root { color-scheme: light dark; --bg:#f7f5ef; --surface:#fffdf8; --text:#17181c;
@@ -54,15 +54,16 @@ code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
 generative, answer, conversational — see, cite, and serve content. Every term is
 typed by the kind of claim it makes; the strata run from durable bedrock to
 interpretive surface:</p>
-<div class="legend"><span class="layer" style="--h:#718096">entity</span><span class="layer" style="--h:#319795">episode</span><span class="layer" style="--h:#38A169">observation</span><span class="layer" style="--h:#805AD5">derivation</span><span class="layer" style="--h:#DD6B20">judgment</span></div>
+<div class="legend"><span class="layer" style="--h:#718096">entity</span><span class="layer" style="--h:#319795">episode</span><span class="layer" style="--h:#38A169">observation</span><span class="layer" style="--h:#805AD5">derivation</span><span class="layer" style="--h:#DD6B20">interpretation</span><span class="layer" style="--h:#D69E2E">norm</span></div>
 <div class="modnote">Modules: <code>weo-core</code> (substrate) ·
 <code>weo-visibility</code> (xEO) · <code>weo-engagement</code> (draft) ·
-<code>weo-decision</code> (judgment tier) · <code>weo-align</code> (schema.org /
-PROV-O / SKOS bridges). Machine-readable Turtle:
+<code>weo-decision</code> (interpretation tier) · <code>weo-strategy</code> (norms tier) ·
+<code>weo-align</code> (schema.org / PROV-O / SKOS bridges). Machine-readable Turtle:
 <a href="weo-core.ttl">core</a>, <a href="weo-visibility.ttl">visibility</a>,
 <a href="weo-engagement.ttl">engagement</a>, <a href="weo-decision.ttl">decision</a>,
-<a href="weo-align.ttl">align</a>; JSON-LD <a href="context.jsonld">context</a>.</div>
-<h2 id="classes">Classes <span class="n">30</span></h2>
+<a href="weo-strategy.ttl">strategy</a>, <a href="weo-align.ttl">align</a>;
+JSON-LD <a href="context.jsonld">context</a>.</div>
+<h2 id="classes">Classes <span class="n">32</span></h2>
 <section id="AnswerEngine" class="term">
   <h3>Answer Engine <span class="mod">weo-visibility</span></h3>
   <code class="iri">weo:AnswerEngine</code>
@@ -130,7 +131,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Activity" class="ext">prov:Activity</a></dd></div></dl>
 </section>
 <section id="Gap" class="term">
-  <h3>Gap <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>Gap <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:Gap</code>
   <p>A diagnosed deficit between current and desired visibility. First-order, but a claim: asserted by a Diagnostic from evidence, never observed directly. Its kind (gapType) is a slotted-in skos:Concept — e.g. a Citation-Waterfall stage — not a subclass baked into the ontology.</p>
   
@@ -168,8 +169,20 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
 <section id="Outcome" class="term">
   <h3>Outcome <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:Outcome</code>
-  <p>The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is a judgment, carried on the Recommendation, not asserted here.</p>
+  <p>The measured result an experiment produced (lift, delta, significance). The measurement is an observation; any claim that the tactic CAUSED it is an interpretation, carried on the Recommendation, not asserted here.</p>
   <dl><div class="row"><dt>subclass of</dt><dd><a href="http://www.w3.org/ns/prov#Entity" class="ext">prov:Entity</a></dd></div></dl>
+</section>
+<section id="Playbook" class="term">
+  <h3>Playbook <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:Playbook</code>
+  <p>A reusable, discipline-scoped bundle of Diagnostics, Tactics, and Practices — an &#x27;SEO playbook&#x27;, an &#x27;AEO playbook&#x27;, a &#x27;local playbook&#x27;. Durable and named, like a Diagnostic. Its scope is the DISCIPLINE, not the account: a Playbook is authored once (by the community or an agency) and reused across every client. What varies per client or campaign is which Playbooks a tenancy activates and which Practices it overrides — never the Playbook itself.</p>
+  
+</section>
+<section id="Practice" class="term">
+  <h3>Practice <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:Practice</code>
+  <p>A standing rule that governs how recommendations are made under stated conditions. Best-practices, SOPs, and lessons-learned are all Practices, distinguished by source, not by class. A Practice does one of three things (practiceKind): veto a candidate (guardrail), reorder it (preference), or attach a caveat (guidance). Revisable and versioned (supersedes); scoped to the concepts it appliesToConcept; audited on the recommendations it fired on (appliedPractice).</p>
+  
 </section>
 <section id="Prompt" class="term">
   <h3>Prompt <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
@@ -178,9 +191,9 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   
 </section>
 <section id="Recommendation" class="term">
-  <h3>Recommendation <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>Recommendation <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:Recommendation</code>
-  <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. A judgment — carries method, confidence, and who/what issued it.</p>
+  <p>The labeled claim the whole chain exists to produce: deploy this Tactic to close this Gap, supported by these Experiments, at a given priority. An interpretation — carries method, confidence, and who/what issued it.</p>
   
 </section>
 <section id="SearchEngine" class="term">
@@ -214,7 +227,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   
 </section>
 <section id="TacticAssessment" class="term">
-  <h3>Tactic Assessment <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>Tactic Assessment <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:TacticAssessment</code>
   <p>A scored estimate of a tactic on ONE dimension (onDimension), carrying score, method, and confidence. The dimension set (impact / risk / time-to-value, or ICE, or your own) and how dimensions are weighted are a strategy-layer concern; this class only records that an assessment was made, on what dimension, and by what method.</p>
   
@@ -243,30 +256,60 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>A site under observation, identified by its origin. The tenancy scope for URLs, crawls, and topics.</p>
   <dl><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/WebSite" class="ext">schema:WebSite</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin)</dd></div></dl>
 </section>
-<h2 id="object-properties">Object properties <span class="n">38</span></h2>
+<h2 id="object-properties">Object properties <span class="n">47</span></h2>
+<section id="activates" class="term">
+  <h3>activates <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:activates</code>
+  <p>A tenancy context puts a Playbook into effect for a body of work. Domain left open: model your own tenancy node (agency, client, engagement, campaign) and point it here — this module stays agnostic about the account hierarchy, which is expressed through appliesAtScope.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="#Playbook">weo:Playbook</a></dd></div></dl>
+</section>
 <section id="addressableBy" class="term">
-  <h3>addressableBy <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>addressableBy <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:addressableBy</code>
   <p>A candidate tactic for closing this gap — a claim, made before the scope gate is applied.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">weo:Gap</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div></dl>
 </section>
+<section id="appliedPractice" class="term">
+  <h3>appliedPractice <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:appliedPractice</code>
+  <p>Audit edge: this Practice was evaluated against this recommendation and fired. Carries method and confidence — the application is a computed derivation, not itself a norm. The transparent record of why a candidate was blocked, demoted, or flagged.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">weo:Practice</a></dd></div></dl>
+</section>
+<section id="appliesAtScope" class="term">
+  <h3>appliesAtScope <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:appliesAtScope</code>
+  <p>The tenancy level at which a Practice (or activation or override) applies, as a slotted-in concept. A recommended hierarchy is default &lt; agency &lt; client &lt; engagement &lt; campaign &lt; user. Domain left open so it can annotate any strategy-layer assertion. Resolution is most-specific-wins: a client-level Practice overrides an agency default, which overrides the shipped default. This is the &#x27;customization&#x27; axis — not a lens, a specificity ladder.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
+<section id="appliesToConcept" class="term">
+  <h3>appliesToConcept <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:appliesToConcept</code>
+  <p>Binds a Practice to the slotted-in concepts it applies to — a page role (hasRole), an Intervention, a gapType, a Capability. Bring your own schemes; the Practice fires only where a candidate carries a matching concept.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
 <section id="assessedAs" class="term">
-  <h3>assessedAs <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>assessedAs <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:assessedAs</code>
   <p>Links a tactic to a per-dimension scored estimate.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div></dl>
 </section>
 <section id="atPriority" class="term">
-  <h3>atPriority <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>atPriority <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:atPriority</code>
   <p>Priority as a slotted-in concept — bring your own scheme (P0/P1/P2, now/next/later, ...).</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
 </section>
 <section id="attributedResponse" class="term">
-  <h3>attributedResponse <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-engagement</span></h3>
+  <h3>attributedResponse <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-engagement</span></h3>
   <code class="iri">weo:attributedResponse</code>
   <p>The claim that this conversion traces to engine visibility captured in this response episode. Multi-engine attribution is inherently inferential: this edge MUST carry method and confidence, and honest implementations will leave it sparse.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#ConversionEvent">weo:ConversionEvent</a></dd></div><div class="row"><dt>range</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div></dl>
+</section>
+<section id="authoredBy" class="term">
+  <h3>authoredBy <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:authoredBy</code>
+  <p>The party that authored a Practice (or an activation or override). Range left open — a person, an agency, the system, or a prov:Agent in your own graph. One half of the customization axis: with appliesAtScope, it decides whose rule wins.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div></dl>
 </section>
 <section id="capturedBy" class="term">
   <h3>capturedBy <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-engagement</span></h3>
@@ -287,15 +330,21 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>grounded in</dt><dd>Engine response citation annotations (per-provider API contract)</dd></div></dl>
 </section>
 <section id="closesGap" class="term">
-  <h3>closesGap <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>closesGap <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:closesGap</code>
   <p>The gap this recommendation aims to close.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">weo:Gap</a></dd></div></dl>
 </section>
+<section id="constrains" class="term">
+  <h3>constrains <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:constrains</code>
+  <p>The Practice governs recommendations matching its conditions — vetoing, reordering, or caveating per its practiceKind. Which recommendations &#x27;match&#x27; is set by appliesToConcept.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div></dl>
+</section>
 <section id="evidencedBy" class="term">
   <h3>evidencedBy <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:evidencedBy</code>
-  <p>The observed facts a gap was derived from — a Prompt&#x27;s visibilityFor rollup, a URL&#x27;s ranksFor, a SerpSnapshot. The seam tying the judgment tier back down to the substrate. Range left open: any observation-bearing term.</p>
+  <p>The observed facts a gap was derived from — a Prompt&#x27;s visibilityFor rollup, a URL&#x27;s ranksFor, a SerpSnapshot. The seam tying the interpretation tier back down to the substrate. Range left open: any observation-bearing term.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Gap">weo:Gap</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
 </section>
 <section id="fansOutTo" class="term">
@@ -346,6 +395,12 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>A result observed on the SERP. Carries position and resultType.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#SerpSnapshot">weo:SerpSnapshot</a></dd></div><div class="row"><dt>range</dt><dd><a href="#URL">weo:URL</a></dd></div></dl>
 </section>
+<section id="hasRole" class="term">
+  <h3>hasRole <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:hasRole</code>
+  <p>The structural role a URL plays on its site, as a slotted-in concept. A recommended starter scheme is coarse and purpose-based: brand-core (home, about), commercial (services, products, sales), content (articles, marketing), infrastructure (pagination, archives, tag and category indexes). Assignment is a DERIVATION from graph and crawl structure — inbound link_position, index-vs-leaf link patterns, template similarity — not URL-string matching; it carries method and confidence, and &#x27;unknown&#x27; is a valid, conservative state. Parallels core&#x27;s inTopic. Norms bind to these roles via appliesToConcept, so &#x27;never redirect an infrastructure page for ranking&#x27; is a rule over a role, not a growing list of regexes.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
+</section>
 <section id="hasSnapshot" class="term">
   <h3>hasSnapshot <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-core</span></h3>
   <code class="iri">weo:hasSnapshot</code>
@@ -370,6 +425,12 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>Process-attributed topic assignment. Carries method, model, confidence, assignedAt.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>closeMatch</dt><dd><a href="https://schema.org/about" class="ext">schema:about</a></dd></div></dl>
 </section>
+<section id="includes" class="term">
+  <h3>includes <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:includes</code>
+  <p>A Diagnostic, Tactic, or Practice bundled into this Playbook. Range left open across the three decision/norm terms it may hold.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Playbook">weo:Playbook</a></dd></div></dl>
+</section>
 <section id="linksTo" class="term">
   <h3>linksTo <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
   <code class="iri">weo:linksTo</code>
@@ -383,7 +444,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">weo:Brand</a></dd></div></dl>
 </section>
 <section id="onDimension" class="term">
-  <h3>onDimension <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>onDimension <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:onDimension</code>
   <p>The dimension being scored, as a slotted-in concept (impact, risk, time-to-value, ICE, RICE, ...). Bring your own dimension scheme.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2004/02/skos/core#Concept" class="ext">skos:Concept</a></dd></div></dl>
@@ -413,7 +474,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>domain</dt><dd><a href="#URL">weo:URL</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>grounded in</dt><dd>Google Search Console Search Analytics API</dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
 <section id="recommends" class="term">
-  <h3>recommends <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>recommends <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:recommends</code>
   <p>The tactic this recommendation puts forward.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div></dl>
@@ -431,7 +492,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>domain</dt><dd><a href="#Tactic">weo:Tactic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Capability">weo:Capability</a></dd></div></dl>
 </section>
 <section id="reveals" class="term">
-  <h3>reveals <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>reveals <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:reveals</code>
   <p>A diagnostic asserts this gap. Carries the assessment method.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Diagnostic">weo:Diagnostic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Gap">weo:Gap</a></dd></div></dl>
@@ -442,14 +503,20 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>Topics are scoped to a Website rather than a free-standing ConceptScheme; skos:inScheme is the analogous grouping.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Topic">weo:Topic</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>seeAlso</dt><dd><a href="http://www.w3.org/2004/02/skos/core#inScheme" class="ext">skos:inScheme</a></dd></div></dl>
 </section>
+<section id="supersedes" class="term">
+  <h3>supersedes <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:supersedes</code>
+  <p>This Practice replaces an earlier version. Editing a rule mints a new Practice that supersedes the old (retired to status &#x27;deprecated&#x27;, never deleted) — the version chain that makes the norms layer revisable and auditable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Practice">weo:Practice</a></dd></div></dl>
+</section>
 <section id="supportedBy" class="term">
-  <h3>supportedBy <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>supportedBy <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:supportedBy</code>
   <p>The precedent experiments backing this recommendation — the earned trust behind the pick.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Recommendation">weo:Recommendation</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Experiment">weo:Experiment</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#wasDerivedFrom" class="ext">prov:wasDerivedFrom</a></dd></div></dl>
 </section>
 <section id="targetsIntent" class="term">
-  <h3>targetsIntent <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-engagement</span></h3>
+  <h3>targetsIntent <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-engagement</span></h3>
   <code class="iri">weo:targetsIntent</code>
   <p>A URL or Prompt is aimed at this intent. A strategist&#x27;s or model&#x27;s claim — carries method and confidence.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="#SearchIntent">weo:SearchIntent</a></dd></div></dl>
@@ -472,7 +539,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">weo:Brand</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">23</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">29</span></h2>
 <section id="address" class="term">
   <h3>address <span class="mod">weo-core</span></h3>
   <code class="iri">weo:address</code>
@@ -486,7 +553,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML §4.5.1</dd></div></dl>
 </section>
 <section id="approved" class="term">
-  <h3>approved <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>approved <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:approved</code>
   <p>Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Capability">weo:Capability</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
@@ -545,6 +612,12 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p>Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>vector-store</dd></div></dl>
 </section>
+<section id="halfLife" class="term">
+  <h3>halfLife <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:halfLife</code>
+  <p>Optional decay window for a Practice whose source is &#x27;claimed&#x27;: how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today&#x27;s answer-engine tactics may not survive the year — a claim nobody&#x27;s experiments confirm ages out on its own.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#duration" class="ext">xsd:duration</a></dd></div></dl>
+</section>
 <section id="impressions" class="term">
   <h3>impressions <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
   <code class="iri">weo:impressions</code>
@@ -570,9 +643,9 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
 </section>
 <section id="method" class="term">
-  <h3>method <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>method <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:method</code>
-  <p>How a judgment or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation.</p>
+  <p>How an interpretation or derivation was produced (model, rule, human analyst). Expected on reveals, assessedAs, and every Recommendation.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="model" class="term">
@@ -593,11 +666,41 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
   <p></p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
 </section>
+<section id="practiceKind" class="term">
+  <h3>practiceKind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:practiceKind</code>
+  <p>How the Practice acts: &#x27;guardrail&#x27; (veto a matching candidate), &#x27;preference&#x27; (reorder it), or &#x27;guidance&#x27; (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="rationale" class="term">
+  <h3>rationale <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:rationale</code>
+  <p>Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="score" class="term">
-  <h3>score <span class="layer" style="--h:#DD6B20">judgment</span><span class="mod">weo-decision</span></h3>
+  <h3>score <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:score</code>
   <p>The value assigned on the assessed dimension. Scale is defined by the dimension scheme, not fixed here.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#TacticAssessment">weo:TacticAssessment</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="source" class="term">
+  <h3>source <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:source</code>
+  <p>Where the Practice came from: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it). Lets one class hold a firm SOP and a fragile claim without conflating their trust.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="statement" class="term">
+  <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:statement</code>
+  <p>The rule in plain language, as a human authored or confirmed it — e.g. &#x27;Never 301 a paginated archive URL for ranking purposes.&#x27; The canonical human-facing form; the structural fields (practiceKind, appliesToConcept, constrains) make it executable.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="status" class="term">
+  <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
+  <code class="iri">weo:status</code>
+  <p>Lifecycle state: &#x27;proposed&#x27;, &#x27;active&#x27;, or &#x27;deprecated&#x27;. A proposed Practice is visible but does not fire; superseding one deprecates it.</p>
+  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="statusCode" class="term">
   <h3>statusCode <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
@@ -621,7 +724,7 @@ PROV-O / SKOS bridges). Machine-readable Turtle:
 <section id="epistemicLayer" class="term">
   <h3>epistemicLayer <span class="mod">weo-core</span></h3>
   <code class="iri">weo:epistemicLayer</code>
-  <p>One of: entity, episode, observation, derivation, judgment. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce judgment-layer terms and must mark them.</p>
+  <p>One of: entity, episode, observation, derivation, interpretation, norm. Types every term by the kind of claim it makes. Core terms stay at entity/episode/observation/derivation; extension modules may introduce interpretation- or norm-layer terms and must mark them.</p>
   
 </section>
 <section id="groundedIn" class="term">
