@@ -6,7 +6,7 @@ web content. One graph model for the whole **xEO** family: SEO, GEO, AEO, and
 whatever letter comes next.
 
 **Prefix:** `weo:` · **Namespace:** `https://inboundfound.github.io/weo-ontology/weo#`
-· **Status:** v0.2 — open draft, built to be riffed on. Issues and PRs welcome.
+· **Status:** v0.3 — open draft, built to be riffed on. Issues and PRs welcome.
 
 ## Why "WEO"
 
@@ -25,7 +25,8 @@ acronyms.
 2. **Epistemic layering.** Every term is typed by the kind of claim it makes:
    `entity` (durable identity) · `episode` (happened at a time, immutable) ·
    `observation` (measured fact) · `derivation` (model output — carries method,
-   model, confidence) · `judgment` (a strategist's claim, labeled as one).
+   model, confidence) · `interpretation` (a strategist's claim, labeled as one) ·
+   `norm` (a standing rule about a class of cases, not a call about one).
    An agent assembling context can filter to observations only.
 3. **Storage-agnostic.** The ontology defines meaning and identity keys; every
    term declares a *canonical store*. The graph holds what you traverse; the
@@ -43,16 +44,18 @@ acronyms.
 |---|---|---|
 | `weo-core.ttl` | the SEO substrate | `Website`, `URL`, `Term`, `Crawl`, `SerpSnapshot`, `Topic`, `SearchPerformanceFact`; `FETCHED`, `LINKS_TO`, `REDIRECTS_TO`, `HAS_CANONICAL`, `RANKS_FOR` (windowed rollups with `datasetUri` provenance), `HAS_RESULT`, `IN_TOPIC` |
 | `weo-visibility.ttl` | the xEO layer | `Engine` (+ `SearchEngine` / `GenerativeEngine` / `AnswerEngine` / `ConversationalAgent`), `Brand`, `Prompt`, `LLMResponse`; `CITES`, `MENTIONS {mentionRank}`, `FANS_OUT_TO` (fan-out queries **are** Terms — the join back to rank data), `VISIBILITY_FOR` rollups (`mentionRate`, `citationRate`) |
-| `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled judgment) |
-| `weo-decision.ttl` | the judgment tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
+| `weo-engagement.ttl` | draft v0 | `SearchIntent` individuals (Broder 2002, extended), `ConversionPoint` (+ `CallToAction` / `LeadCaptureForm` / `GatedAsset`), `ConversionEvent`, `crmRecordRef` (the CRM join key), `attributedResponse` (pre-click attribution — a labeled interpretation) |
+| `weo-decision.ttl` | the interpretation tier | `Diagnostic`, `Gap`, `Tactic`, `Capability`, `Experiment`, `Outcome`, `Recommendation`; the chain `reveals`→`addressableBy`→`requiresCapability` (scope gate)→`tests`/`inContext`→`recommends`/`supportedBy`. Classes, never values — `gapType`/`inIntervention`/`onDimension`/`atPriority` are `skos:Concept` slots you fill. |
+| `weo-strategy.ttl` | the norms tier | `Practice` (a standing rule: `guardrail` vetoes a candidate, `preference` reorders it, `guidance` caveats it), `Playbook` (a reusable discipline bundle); `constrains`, `appliesToConcept`, `appliedPractice` (the audit edge — why a candidate was blocked), `supersedes` (revisable, never deleted), `hasRole` (page roles as a derivation, not regexes), `appliesAtScope` (the tenancy specificity ladder). Governs **how** a `Recommendation` is allowed to be made. |
 | `weo-align.ttl` | interoperability | Optional bridges — schema.org (`WebSite`, `WebPage`, `Brand`, `Observation`), PROV-O (`Crawl`→`Activity`, `Engine`→`SoftwareAgent`, `LLMResponse`→`Entity`), SKOS (`Topic`→`Concept`, `childOf`→`broader`). **Alignments, not dependencies.** |
 | `context.jsonld` | interoperability | A JSON-LD `@context` mapping graph labels/relationships/properties to IRIs — turns a Neo4j export into valid RDF/JSON-LD in one pass. |
-| `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for all three modules |
+| `schema.cypher` | property graph | Neo4j 5.x constraints + indexes for every module |
 
 The core module is the stable substrate. Visibility is field-tested against a
-working tracker/response-capture/Neo4j implementation. Engagement is an early
-draft published for discussion — the "pre-click funnel" seam that engine-side
-data has been missing.
+working tracker/response-capture/Neo4j implementation. Decision and strategy are
+implemented in production (see `weo-graph-kit` for a runnable slice). Engagement
+is an early draft published for discussion — the "pre-click funnel" seam that
+engine-side data has been missing.
 
 ## The mental model
 
@@ -62,17 +65,19 @@ data has been missing.
   visibility  Engine · Brand · Prompt          LLMResponse
   engagement  ConversionPoint · SearchIntent   ConversionEvent
   decision    Gap · Tactic · Capability        Experiment (→ Outcome)
+  strategy    Practice · Playbook               (norms — rules, not events)
 
   observations attach facts to entities/episodes (FETCHED, CITES, MENTIONS…)
   derivations carry method/model/confidence (IN_TOPIC, embeddingRef…)
-  judgments are labeled claims (targetsIntent, addressableBy, Recommendation)
+  interpretations are labeled claims (targetsIntent, addressableBy, Recommendation)
+  norms are standing rules over a class of cases (Practice constrains …)
   high-cardinality facts live in column stores; graphs keep windowed rollups
   with datasetUri pointing at the authoritative table
 
   the strata get more interpretive upward: core is bedrock (falsifiable,
-  standards-grounded); decision is the surface (diagnosed, recommended). Load
-  only the strata you need — filter to observation and the whole judgment
-  tier drops away.
+  standards-grounded); decision is the surface (diagnosed, recommended); strategy
+  governs it (what SHOULD hold, not what is). Load only the strata you need —
+  filter to observation and the interpretation and norm tiers drop away.
 ```
 
 Two rollup patterns rhyme on purpose:
@@ -111,8 +116,8 @@ RETURN e.id, cp.crmRecordRef, collect(r.id) AS candidate_responses;
 
 ## The decision layer — from an observation to a labeled recommendation
 
-`weo-decision.ttl` is the top stratum: where facts become a plan, honestly
-labeled as judgment. It is the one chain the whole model builds toward —
+`weo-decision.ttl` is where facts become a plan, honestly labeled as
+interpretation. It is the one chain the whole model builds toward —
 
 ```
 observation  →  Diagnostic reveals Gap  →  Gap addressableBy Tactic
@@ -182,10 +187,10 @@ object properties resolve to node references, datatype properties carry their
 
 ## What is deliberately NOT here
 
-- **Strategy / agency configuration** — the rules that constrain which approach
-  is allowed under which conditions. `weo-decision` gives you the scope-gate
-  *mechanism* (`requiresCapability` + `approved`); the *policy* that sets those
-  approvals lives in a config layer above the ontology.
+- **Filled-in norms** — `weo-strategy` ships the *mechanism* for standing rules
+  (`Practice`, `practiceKind`, `appliesToConcept`, `appliedPractice`), never the
+  rules themselves. "Never 301 a paginated archive" is an instance you author, and
+  which Practices a given tenancy activates or overrides is data, not schema.
 - **Filled-in taxonomies** — the actual interventions, priorities, gap types,
   and the dimensions a tactic is scored on (impact / risk / time-to-value) with
   their weightings. Those are `skos:Concept` schemes and instances you slot in,
@@ -193,8 +198,8 @@ object properties resolve to node references, datatype properties carry their
 - **Vendor vocabularies** — your CRM and analytics stack join via identity keys
   (`crmRecordRef`, `datasetUri`), never as imported schemas.
 - **Quality scores and other unfalsifiable constructs** — if it isn't an
-  observation, a provenance-carrying derivation, or a labeled judgment, it
-  doesn't get a term.
+  observation, a provenance-carrying derivation, a labeled interpretation, or a
+  norm that says so out loud, it doesn't get a term.
 
 ## Using it
 
@@ -204,8 +209,9 @@ cat schema.cypher | cypher-shell -u neo4j -p <password>
 ```
 
 The TTL files are plain OWL — load `weo-core`, `weo-visibility`,
-`weo-engagement`, and (if you want the crosswalk) `weo-align` into any triple
-store or ontology editor. To publish graph data as linked data, serve your
+`weo-engagement`, `weo-decision`, `weo-strategy`, and (if you want the crosswalk)
+`weo-align` into any triple store or ontology editor. Decision builds on core;
+strategy builds on decision; the rest stand alone. To publish graph data as linked data, serve your
 Neo4j export under `context.jsonld` and it validates as RDF/JSON-LD.
 
 **Namespace.** Terms currently resolve under GitHub Pages

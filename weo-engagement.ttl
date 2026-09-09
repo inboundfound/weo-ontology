@@ -16,6 +16,12 @@
 # attributedResponse). Interpretations carry method and confidence; they are claims,
 # not facts, and agents assembling context can filter them out.
 
+weo:engagement-module a owl:Ontology ;
+    dct:title "WEO Engagement (draft)" ;
+    dct:description "DRAFT v0. The seam between web-engine visibility and the pipeline: intents, conversion points, conversion events, and identity-key pointers into whatever CRM you run." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.3.0" .
+
 # --- Intent ------------------------------------------------------------------
 
 weo:SearchIntent a owl:Class ;

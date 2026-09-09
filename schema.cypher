@@ -1,4 +1,4 @@
-// WEO Ontology — Neo4j 5.x schema (core + visibility + engagement modules)
+// WEO Ontology — Neo4j 5.x schema (core + visibility + engagement + decision + strategy)
 // Entities are durable, episodes are immutable, tenancy lives in properties.
 
 // ========== CORE ==========
@@ -90,7 +90,7 @@ FOR (e:ConversionEvent) ON (e.occurredAt);
 CREATE INDEX conversion_point_crm_ref IF NOT EXISTS
 FOR (c:ConversionPoint) ON (c.crmRecordRef);
 
-// ========== DECISION (the judgment tier) ==========
+// ========== DECISION (the interpretation tier) ==========
 
 // ---------- Entities ----------
 // Tactics are a shared library (global); intervention category is a slotted-in concept.
@@ -121,6 +121,32 @@ FOR (e:Experiment) ON (e.concludedAt);
 // Precedent lookup: "tactics tried against a gap of this kind" scans by gapType.
 CREATE INDEX gap_website IF NOT EXISTS
 FOR (g:Gap) ON (g.websiteId);
+
+// ========== STRATEGY (the norms tier) ==========
+// Practices and Playbooks are authored once and reused; what varies per tenant is
+// which Playbooks are activated and which Practices are overridden. Both are
+// global by id — tenancy rides on the activation and override edges, not on the
+// rule itself. Matches weo-graph-kit/seed/practices.cypher.
+
+CREATE CONSTRAINT practice_id IF NOT EXISTS
+FOR (p:Practice) REQUIRE p.id IS UNIQUE;
+
+CREATE CONSTRAINT playbook_id IF NOT EXISTS
+FOR (pb:Playbook) REQUIRE pb.id IS UNIQUE;
+
+// Only 'active' Practices fire; 'proposed' is visible but inert, 'deprecated' is
+// retired-not-deleted (superseding one deprecates it). Every evaluation filters
+// on this, so it is the hot path.
+CREATE INDEX practice_status IF NOT EXISTS
+FOR (p:Practice) ON (p.status);
+
+// A claimed Practice decays unless experiments promote it; the sweep scans by source.
+CREATE INDEX practice_source IF NOT EXISTS
+FOR (p:Practice) ON (p.source);
+
+// The audit trail: "which rules fired on this recommendation, and why".
+CREATE INDEX applied_practice_method IF NOT EXISTS
+FOR ()-[a:APPLIED_PRACTICE]-() ON (a.method);
 
 // ========== NOTES ==========
 // Embeddings live in an external vector store; the graph keeps only the

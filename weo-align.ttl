@@ -27,7 +27,7 @@ weo:align-module a owl:Ontology ;
     dct:title "WEO Alignment (schema.org · PROV-O · SKOS)" ;
     dct:description "Optional crosswalk from WEO terms to foundational web vocabularies. Alignments, not imports: WEO is self-contained without them." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.2.0" ;
+    owl:versionInfo "0.3.0" ;
     rdfs:seeAlso <https://schema.org/> , <http://www.w3.org/ns/prov#> ,
                  <http://www.w3.org/2004/02/skos/core#> .
 

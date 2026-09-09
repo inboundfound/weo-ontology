@@ -26,6 +26,10 @@
     "Prompt": "weo:Prompt",
     "LLMResponse": "weo:LLMResponse",
     "SearchIntent": "weo:SearchIntent",
+    "Informational": "weo:Informational",
+    "Navigational": "weo:Navigational",
+    "CommercialInvestigation": "weo:CommercialInvestigation",
+    "Transactional": "weo:Transactional",
     "ConversionPoint": "weo:ConversionPoint",
     "CallToAction": "weo:CallToAction",
     "LeadCaptureForm": "weo:LeadCaptureForm",
@@ -40,6 +44,8 @@
     "Experiment": "weo:Experiment",
     "Outcome": "weo:Outcome",
     "Recommendation": "weo:Recommendation",
+    "Practice": "weo:Practice",
+    "Playbook": "weo:Playbook",
 
     "partOf": { "@id": "weo:partOf", "@type": "@id" },
     "hasCrawl": { "@id": "weo:hasCrawl", "@type": "@id" },
@@ -79,6 +85,15 @@
     "closesGap": { "@id": "weo:closesGap", "@type": "@id" },
     "supportedBy": { "@id": "weo:supportedBy", "@type": "@id" },
     "atPriority": { "@id": "weo:atPriority", "@type": "@id" },
+    "constrains": { "@id": "weo:constrains", "@type": "@id" },
+    "appliesToConcept": { "@id": "weo:appliesToConcept", "@type": "@id" },
+    "appliedPractice": { "@id": "weo:appliedPractice", "@type": "@id" },
+    "supersedes": { "@id": "weo:supersedes", "@type": "@id" },
+    "includes": { "@id": "weo:includes", "@type": "@id" },
+    "activates": { "@id": "weo:activates", "@type": "@id" },
+    "hasRole": { "@id": "weo:hasRole", "@type": "@id" },
+    "authoredBy": { "@id": "weo:authoredBy", "@type": "@id" },
+    "appliesAtScope": { "@id": "weo:appliesAtScope", "@type": "@id" },
 
     "websiteId": "weo:websiteId",
     "origin": "weo:origin",
@@ -98,7 +113,10 @@
     "crmRecordRef": "weo:crmRecordRef",
     "embeddingRef": "weo:embeddingRef",
     "embeddingModel": "weo:embeddingModel",
-    "method": "weo:method",
+    "statement": "weo:statement",
+    "practiceKind": "weo:practiceKind",
+    "status": "weo:status",
+    "rationale": "weo:rationale",
 
     "statusCode": { "@id": "weo:statusCode", "@type": "xsd:integer" },
     "clicks": { "@id": "weo:clicks", "@type": "xsd:integer" },
@@ -115,7 +133,6 @@
     "citationRate": { "@id": "weo:citationRate", "@type": "xsd:decimal" },
     "score": { "@id": "weo:score", "@type": "xsd:decimal" },
     "lift": { "@id": "weo:lift", "@type": "xsd:decimal" },
-    "confidence": { "@id": "weo:confidence", "@type": "xsd:decimal" },
 
     "webSearchEnabled": { "@id": "weo:webSearchEnabled", "@type": "xsd:boolean" },
     "approved": { "@id": "weo:approved", "@type": "xsd:boolean" },
@@ -128,6 +145,8 @@
     "lastSeenAt": { "@id": "weo:lastSeenAt", "@type": "xsd:dateTime" },
     "assignedAt": { "@id": "weo:assignedAt", "@type": "xsd:dateTime" },
     "periodStart": { "@id": "weo:periodStart", "@type": "xsd:date" },
-    "periodEnd": { "@id": "weo:periodEnd", "@type": "xsd:date" }
+    "periodEnd": { "@id": "weo:periodEnd", "@type": "xsd:date" },
+
+    "halfLife": { "@id": "weo:halfLife", "@type": "xsd:duration" }
   }
 }

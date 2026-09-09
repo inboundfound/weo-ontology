@@ -12,7 +12,7 @@ weo: a owl:Ontology ;
     dct:title "WEO Core Ontology (Web Engine Optimization)" ;
     dct:description "Standards-grounded observation layer for web-engine data in a property graph. WEO generalizes the xEO family (SEO, GEO, AEO): one vocabulary for how search, generative, and answer engines see and serve web content. Entities are durable, episodes are immutable, derivations carry provenance. Interpretations and decisions are modeled in higher layers." ;
     dct:creator "Inbound Found" ;
-    owl:versionInfo "0.2.0" .
+    owl:versionInfo "0.3.0" .
 
 # --- Annotation properties -------------------------------------------------
 
@@ -158,7 +158,7 @@ weo:impressions a owl:DatatypeProperty ;
     weo:groundedIn "GSC Search Analytics API" .
 
 weo:avgPosition a owl:DatatypeProperty ;
-    rdfs:range xsd:float ;
+    rdfs:range xsd:decimal ;
     weo:epistemicLayer "observation" ;
     weo:groundedIn "GSC Search Analytics API" .
 
@@ -173,6 +173,96 @@ weo:embeddingModel a owl:DatatypeProperty ;
     weo:epistemicLayer "derivation" .
 
 weo:confidence a owl:DatatypeProperty ;
-    rdfs:range xsd:float ;
+    rdfs:range xsd:decimal ;
     weo:epistemicLayer "derivation" ;
     dct:description "0-1 confidence attached to a derivation edge." .
+
+# --- Relationship-carried properties -----------------------------------------
+# These ride on edges rather than nodes, so they carry no rdfs:domain. They were
+# previously described in the README only, while context.jsonld already published
+# them as weo: IRIs — so they had to resolve. Declared here to close that gap.
+
+weo:websiteId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of 'tenancy is data, not schema'." .
+
+weo:datasetUri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Pointer to the authoritative table a windowed rollup was projected from (e.g. a BigQuery table URI). The provenance contract for ranksFor and visibilityFor: the graph keeps the traversable projection, this says where the ground truth lives." .
+
+weo:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The identifying name of a Term, Topic, Brand, or Capability. Unique within its scope; see schema.cypher for the per-class identity keys." .
+
+weo:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "WHATWG HTML (the title element)" ;
+    dct:description "The document title observed on a fetch. Carried on the fetched edge, not on the URL: the address is durable, the title is what one crawl saw." .
+
+weo:metaDescription a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "WHATWG HTML (meta name=description)" ;
+    dct:description "The meta description observed on a fetch. Carried on the fetched edge." .
+
+weo:rel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "WHATWG HTML (link types)" ;
+    dct:description "The rel attribute of an observed hyperlink (nofollow, sponsored, ugc, ...). Carried on linksTo." .
+
+weo:resultType a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "observation" ;
+    dct:description "The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult; the vocabulary is per-engine and belongs to the consumer." .
+
+weo:position a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    dct:description "1-based rank of a result within a SERP snapshot. Carried on hasResult. Distinct from avgPosition, which is a windowed rollup, not a single observation." .
+
+weo:ctr a owl:DatatypeProperty ;
+    rdfs:range xsd:decimal ;
+    weo:epistemicLayer "observation" ;
+    weo:groundedIn "GSC Search Analytics API" ;
+    dct:description "Clickthrough rate over the rollup window. Carried on ranksFor." .
+
+weo:periodStart a owl:DatatypeProperty ;
+    rdfs:range xsd:date ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor; never pool across windows silently." .
+
+weo:periodEnd a owl:DatatypeProperty ;
+    rdfs:range xsd:date ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor." .
+
+weo:fetchedAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "observation" ;
+    dct:description "When the fetch observation was made. Carried on fetched." .
+
+weo:firstSeenAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "observation" ;
+    dct:description "When an observed edge (a link, typically) was first seen. Half of the bitemporal pair that makes link liveness answerable." .
+
+weo:lastSeenAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "observation" ;
+    dct:description "When an observed edge was most recently seen. With lastSeenCrawlId this is how a link is known to be live rather than merely once-observed." .
+
+weo:assignedAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    weo:epistemicLayer "derivation" ;
+    dct:description "When a derivation edge was written (e.g. a topic assignment). Carried on inTopic alongside method, model and confidence." .
+
+# --- Module IRI convention ---------------------------------------------------
+# `weo:` above names the ontology as a whole — all modules share one hash
+# namespace, so a term IRI never says which file it came from. Each module also
+# declares `weo:<name>-module` (weo:visibility-module, weo:align-module, ...) so
+# it can be versioned and cited on its own.

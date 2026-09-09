@@ -14,6 +14,12 @@
 # produced carries provenance. Field-tested against a working
 # tracker + response-capture + Neo4j implementation before publication.
 
+weo:visibility-module a owl:Ontology ;
+    dct:title "WEO Visibility (the xEO layer)" ;
+    dct:description "Extends WEO Core with the terms needed once the engine stops being a results page and starts being an answer: engines, prompts, captured responses, citations, mentions, and the visibility rollups over them." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.3.0" .
+
 # --- Classes ----------------------------------------------------------------
 
 weo:Engine a owl:Class ;
@@ -113,11 +119,34 @@ weo:mentionRank a owl:DatatypeProperty ;
     dct:description "1-based order of the brand's first appearance in the response text. Carried on mentions edges." .
 
 weo:mentionRate a owl:DatatypeProperty ;
-    rdfs:range xsd:float ;
+    rdfs:range xsd:decimal ;
     weo:epistemicLayer "observation" ;
     dct:description "Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups." .
 
 weo:citationRate a owl:DatatypeProperty ;
-    rdfs:range xsd:float ;
+    rdfs:range xsd:decimal ;
     weo:epistemicLayer "observation" ;
     dct:description "Share of captured responses in the window that cite the brand's owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else." .
+
+# --- Relationship-carried properties -----------------------------------------
+# Declared for the same reason as core's: context.jsonld already publishes them.
+
+weo:text a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "entity" ;
+    dct:description "The natural-language body of a Prompt as posed to the engine. Part of a Prompt's identity together with websiteId." .
+
+weo:modelVersion a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    weo:epistemicLayer "episode" ;
+    dct:description "The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time." .
+
+weo:citationRank a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    dct:description "1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set." .
+
+weo:responses a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    weo:epistemicLayer "observation" ;
+    dct:description "How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted." .

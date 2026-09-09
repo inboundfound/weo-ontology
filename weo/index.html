@@ -539,7 +539,7 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>Windowed rollup of response-level observations for a (prompt, brand) pair: mentionRate, citationRate, responses, periodStart, periodEnd, source, datasetUri. Mirrors the ranksFor rollup pattern — raw responses are the authoritative record; this is the traversal-friendly projection.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Prompt">weo:Prompt</a></dd></div><div class="row"><dt>range</dt><dd><a href="#Brand">weo:Brand</a></dd></div><div class="row"><dt>canonical store</dt><dd>neo4j</dd></div></dl>
 </section>
-<h2 id="datatype-properties">Datatype properties <span class="n">29</span></h2>
+<h2 id="datatype-properties">Datatype properties <span class="n">48</span></h2>
 <section id="address" class="term">
   <h3>address <span class="mod">weo-core</span></h3>
   <code class="iri">weo:address</code>
@@ -558,11 +558,17 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>Whether this capability is approved for the engagement — the live state of the scope gate. Tenancy-scoped like everything else.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Capability">weo:Capability</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
 </section>
+<section id="assignedAt" class="term">
+  <h3>assignedAt <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:assignedAt</code>
+  <p>When a derivation edge was written (e.g. a topic assignment). Carried on inTopic alongside method, model and confidence.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
 <section id="avgPosition" class="term">
   <h3>avgPosition <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
   <code class="iri">weo:avgPosition</code>
   <p></p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
 </section>
 <section id="capturedAt" class="term">
   <h3>capturedAt <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
@@ -570,11 +576,17 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>The response record was generated at capture time.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div><div class="row"><dt>subproperty of</dt><dd><a href="http://www.w3.org/ns/prov#generatedAtTime" class="ext">prov:generatedAtTime</a></dd></div></dl>
 </section>
+<section id="citationRank" class="term">
+  <h3>citationRank <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:citationRank</code>
+  <p>1-based order of a cited source where the engine orders its citations. Carried on cites; absent where the engine reports an unordered set.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
 <section id="citationRate" class="term">
   <h3>citationRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
   <code class="iri">weo:citationRate</code>
   <p>Share of captured responses in the window that cite the brand&#x27;s owned URLs. Cited and mentioned diverge — a page can ground an answer that names someone else.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="clicks" class="term">
   <h3>clicks <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
@@ -592,13 +604,25 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <h3>confidence <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
   <code class="iri">weo:confidence</code>
   <p>0-1 confidence attached to a derivation edge.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
 </section>
 <section id="crmRecordRef" class="term">
   <h3>crmRecordRef <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-engagement</span></h3>
   <code class="iri">weo:crmRecordRef</code>
   <p>Identity-key pointer to the CRM object (form id, contact id, deal id) in whatever system runs the pipeline. The join contract to the post-click world — the graph never mirrors the CRM&#x27;s schema.</p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>crm</dd></div></dl>
+</section>
+<section id="ctr" class="term">
+  <h3>ctr <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:ctr</code>
+  <p>Clickthrough rate over the rollup window. Carried on ranksFor.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="datasetUri" class="term">
+  <h3>datasetUri <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:datasetUri</code>
+  <p>Pointer to the authoritative table a windowed rollup was projected from (e.g. a BigQuery table URI). The provenance contract for ranksFor and visibilityFor: the graph keeps the traversable projection, this says where the ground truth lives.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="embeddingModel" class="term">
   <h3>embeddingModel <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
@@ -612,6 +636,18 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>Pointer (collection + id) to the vector in the external store. The geometry lives where ANN search happens; the graph keeps the claim and its provenance.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Term">weo:Term</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>canonical store</dt><dd>vector-store</dd></div></dl>
 </section>
+<section id="fetchedAt" class="term">
+  <h3>fetchedAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:fetchedAt</code>
+  <p>When the fetch observation was made. Carried on fetched.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
+<section id="firstSeenAt" class="term">
+  <h3>firstSeenAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:firstSeenAt</code>
+  <p>When an observed edge (a link, typically) was first seen. Half of the bitemporal pair that makes link liveness answerable.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
+</section>
 <section id="halfLife" class="term">
   <h3>halfLife <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
   <code class="iri">weo:halfLife</code>
@@ -623,6 +659,12 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <code class="iri">weo:impressions</code>
   <p></p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>GSC Search Analytics API</dd></div></dl>
+</section>
+<section id="lastSeenAt" class="term">
+  <h3>lastSeenAt <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:lastSeenAt</code>
+  <p>When an observed edge was most recently seen. With lastSeenCrawlId this is how a link is known to be live rather than merely once-observed.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ext">xsd:dateTime</a></dd></div></dl>
 </section>
 <section id="lift" class="term">
   <h3>lift <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-decision</span></h3>
@@ -640,7 +682,13 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <h3>mentionRate <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
   <code class="iri">weo:mentionRate</code>
   <p>Share of captured responses in the window that mention the brand. Carried on visibilityFor rollups.</p>
-  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#float" class="ext">xsd:float</a></dd></div></dl>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#decimal" class="ext">xsd:decimal</a></dd></div></dl>
+</section>
+<section id="metaDescription" class="term">
+  <h3>metaDescription <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:metaDescription</code>
+  <p>The meta description observed on a fetch. Carried on the fetched edge.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (meta name=description)</dd></div></dl>
 </section>
 <section id="method" class="term">
   <h3>method <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
@@ -654,6 +702,18 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>Model identifier + version as reported at capture time. Without this the episode is not comparable across time.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="modelVersion" class="term">
+  <h3>modelVersion <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:modelVersion</code>
+  <p>The model build reported at capture time, where the engine distinguishes it from the model name. Without model + modelVersion an episode is not comparable across time.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="name" class="term">
+  <h3>name <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:name</code>
+  <p>The identifying name of a Term, Topic, Brand, or Capability. Unique within its scope; see schema.cypher for the per-class identity keys.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="occurredAt" class="term">
   <h3>occurredAt <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-engagement</span></h3>
   <code class="iri">weo:occurredAt</code>
@@ -665,6 +725,24 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <code class="iri">weo:origin</code>
   <p></p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Website">weo:Website</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG URL Standard (origin serialization)</dd></div></dl>
+</section>
+<section id="periodEnd" class="term">
+  <h3>periodEnd <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:periodEnd</code>
+  <p>Inclusive last day of a rollup window. Carried on ranksFor and visibilityFor.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
+</section>
+<section id="periodStart" class="term">
+  <h3>periodStart <span class="layer" style="--h:#805AD5">derivation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:periodStart</code>
+  <p>Inclusive first day of a rollup window. Carried on ranksFor and visibilityFor; never pool across windows silently.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#date" class="ext">xsd:date</a></dd></div></dl>
+</section>
+<section id="position" class="term">
+  <h3>position <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:position</code>
+  <p>1-based rank of a result within a SERP snapshot. Carried on hasResult. Distinct from avgPosition, which is a windowed rollup, not a single observation.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
 </section>
 <section id="practiceKind" class="term">
   <h3>practiceKind <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
@@ -678,6 +756,24 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p>Why the rule exists — surfaced to a user when the Practice fires, so a veto or demotion is explained, never silent.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
+<section id="rel" class="term">
+  <h3>rel <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:rel</code>
+  <p>The rel attribute of an observed hyperlink (nofollow, sponsored, ugc, ...). Carried on linksTo.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (link types)</dd></div></dl>
+</section>
+<section id="responses" class="term">
+  <h3>responses <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:responses</code>
+  <p>How many captured responses the rollup window covers — the denominator behind mentionRate and citationRate. Carried on visibilityFor; a rate without it cannot be weighted.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div></dl>
+</section>
+<section id="resultType" class="term">
+  <h3>resultType <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:resultType</code>
+  <p>The kind of SERP result observed (organic, featured snippet, local pack, ...). Carried on hasResult; the vocabulary is per-engine and belongs to the consumer.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
 <section id="score" class="term">
   <h3>score <span class="layer" style="--h:#DD6B20">interpretation</span><span class="mod">weo-decision</span></h3>
   <code class="iri">weo:score</code>
@@ -687,8 +783,8 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
 <section id="source" class="term">
   <h3>source <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
   <code class="iri">weo:source</code>
-  <p>Where the Practice came from: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it). Lets one class hold a firm SOP and a fragile claim without conflating their trust.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <p>Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: &#x27;authored&#x27; (a human SOP or best-practice — high standing, durable), &#x27;learned&#x27; (earned from the experiment ledger — confidence ratchets with Outcomes), or &#x27;claimed&#x27; (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming weo:Practice here would silently type every rollup edge carrying a source as a Practice.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="statement" class="term">
   <h3>statement <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
@@ -699,8 +795,8 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
 <section id="status" class="term">
   <h3>status <span class="layer" style="--h:#D69E2E">norm</span><span class="mod">weo-strategy</span></h3>
   <code class="iri">weo:status</code>
-  <p>Lifecycle state: &#x27;proposed&#x27;, &#x27;active&#x27;, or &#x27;deprecated&#x27;. A proposed Practice is visible but does not fire; superseding one deprecates it.</p>
-  <dl><div class="row"><dt>domain</dt><dd><a href="#Practice">weo:Practice</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+  <p>Lifecycle state of a revisable term. The value vocabulary is subject-specific. On a Practice: &#x27;proposed&#x27;, &#x27;active&#x27;, or &#x27;deprecated&#x27; — a proposed Practice is visible but does not fire, and superseding one deprecates it. DOMAIN LEFT OPEN deliberately, so another revisable term (the execution lifecycle of a Recommendation, say) can carry a lifecycle without being entailed a Practice.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <section id="statusCode" class="term">
   <h3>statusCode <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
@@ -708,11 +804,29 @@ JSON-LD <a href="context.jsonld">context</a>.</div>
   <p></p>
   <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#integer" class="ext">xsd:integer</a></dd></div><div class="row"><dt>grounded in</dt><dd>RFC 9110 §15 (Status Codes)</dd></div></dl>
 </section>
+<section id="text" class="term">
+  <h3>text <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-visibility</span></h3>
+  <code class="iri">weo:text</code>
+  <p>The natural-language body of a Prompt as posed to the engine. Part of a Prompt&#x27;s identity together with websiteId.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
+</section>
+<section id="title" class="term">
+  <h3>title <span class="layer" style="--h:#38A169">observation</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:title</code>
+  <p>The document title observed on a fetch. Carried on the fetched edge, not on the URL: the address is durable, the title is what one crawl saw.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div><div class="row"><dt>grounded in</dt><dd>WHATWG HTML (the title element)</dd></div></dl>
+</section>
 <section id="webSearchEnabled" class="term">
   <h3>webSearchEnabled <span class="layer" style="--h:#319795">episode</span><span class="mod">weo-visibility</span></h3>
   <code class="iri">weo:webSearchEnabled</code>
   <p>Whether the engine could search the web for this response. Citation behavior differs sharply with this flag; never pool across it silently.</p>
   <dl><div class="row"><dt>domain</dt><dd><a href="#LLMResponse">weo:LLMResponse</a></dd></div><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#boolean" class="ext">xsd:boolean</a></dd></div></dl>
+</section>
+<section id="websiteId" class="term">
+  <h3>websiteId <span class="layer" style="--h:#718096">entity</span><span class="mod">weo-core</span></h3>
+  <code class="iri">weo:websiteId</code>
+  <p>The tenancy key. Scope lives in this property on every scoped node and edge, never in a dynamic label — the identity half of &#x27;tenancy is data, not schema&#x27;.</p>
+  <dl><div class="row"><dt>range</dt><dd><a href="http://www.w3.org/2001/XMLSchema#string" class="ext">xsd:string</a></dd></div></dl>
 </section>
 <h2 id="annotation-properties">Annotation properties <span class="n">3</span></h2>
 <section id="canonicalStore" class="term">
