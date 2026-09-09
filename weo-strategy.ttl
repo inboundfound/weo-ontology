@@ -26,8 +26,8 @@
 # choice — reusable across cases, authored by a person or earned from
 # experiments, and revisable. It stands above a single decision: one
 # Recommendation is a call about one case; a Practice is a norm about a class of
-# cases. This is a new epistemic stratum; core's epistemicLayer note should be
-# extended to list "norm".
+# cases. This is a new epistemic stratum, and core's epistemicLayer annotation
+# already lists it — extension modules introducing norm terms must mark them.
 #
 # DISCIPLINE (unchanged from decision): this module ships CLASSES, never VALUES.
 # Practice, Playbook, and the norm relations are here. "Never 301 a paginated
@@ -115,14 +115,14 @@ weo:practiceKind a owl:DatatypeProperty ;
     dct:description "How the Practice acts: 'guardrail' (veto a matching candidate), 'preference' (reorder it), or 'guidance' (attach a caveat, change nothing). The mechanism, kept as a small controlled string rather than a subclass." .
 
 weo:source a owl:DatatypeProperty ;
-    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    rdfs:range xsd:string ;
     weo:epistemicLayer "norm" ;
-    dct:description "Where the Practice came from: 'authored' (a human SOP or best-practice — high standing, durable), 'learned' (earned from the experiment ledger — confidence ratchets with Outcomes), or 'claimed' (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it). Lets one class hold a firm SOP and a fragile claim without conflating their trust." .
+    dct:description "Provenance of an assertion. The value vocabulary is subject-specific. On a Practice: 'authored' (a human SOP or best-practice — high standing, durable), 'learned' (earned from the experiment ledger — confidence ratchets with Outcomes), or 'claimed' (an unproven assertion, e.g. a current answer-engine tactic — ships low-confidence with a halfLife and decays unless experiments promote it); this lets one class hold a firm SOP and a fragile claim without conflating their trust. On a ranksFor or visibilityFor rollup: the data source the window was built from. DOMAIN LEFT OPEN deliberately — rdfs:domain is an entailment rule, not a constraint, so naming weo:Practice here would silently type every rollup edge carrying a source as a Practice." .
 
 weo:status a owl:DatatypeProperty ;
-    rdfs:domain weo:Practice ; rdfs:range xsd:string ;
+    rdfs:range xsd:string ;
     weo:epistemicLayer "norm" ;
-    dct:description "Lifecycle state: 'proposed', 'active', or 'deprecated'. A proposed Practice is visible but does not fire; superseding one deprecates it." .
+    dct:description "Lifecycle state of a revisable term. The value vocabulary is subject-specific. On a Practice: 'proposed', 'active', or 'deprecated' — a proposed Practice is visible but does not fire, and superseding one deprecates it. DOMAIN LEFT OPEN deliberately, so another revisable term (the execution lifecycle of a Recommendation, say) can carry a lifecycle without being entailed a Practice." .
 
 weo:rationale a owl:DatatypeProperty ;
     rdfs:domain weo:Practice ; rdfs:range xsd:string ;

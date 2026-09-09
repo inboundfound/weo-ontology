@@ -59,7 +59,8 @@ profile of `seovoc`:
 the alignment pass, and do not force the decision-intelligence or assistant layers into it. The
 overlap is worth an explicit mapping; the extension is the point of the ontology.
 
-**Status:** `weo-align.ttl` currently relates WEO to `schema.org`, `prov`, `skos` and `dcterms`,
+**Status:** `weo-align.ttl` currently relates WEO to `schema.org`, `prov` and `skos` (`dcterms` is
+used for module metadata, not aligned to),
 and does not yet mention `seovoc`. The alignment pass is open work.
 
 ---

@@ -24,7 +24,7 @@
 # specific tactic dimensions (impact / risk / time-to-value), how they are
 # weighted, and the rules that constrain an approach under given conditions live
 # one layer higher still — a strategy/agency config layer this module
-# deliberately leaves open.
+# deliberately leaves open. (That layer now exists: weo-strategy.ttl.)
 #
 # One dependency, declared honestly: unlike core/visibility/engagement (which
 # stand alone on primary web standards), this module uses SKOS as its

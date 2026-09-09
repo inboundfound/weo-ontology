@@ -24,10 +24,10 @@ weo:SearchIntent a owl:Class ;
     weo:groundedIn "Broder (2002), 'A taxonomy of web search', as extended in common practice" ;
     dct:description "Why the person is asking. Modeled as named individuals, not free strings." .
 
-weo:Informational a weo:SearchIntent ; rdfs:label "Informational" .
-weo:Navigational  a weo:SearchIntent ; rdfs:label "Navigational" .
-weo:CommercialInvestigation a weo:SearchIntent ; rdfs:label "Commercial Investigation" .
-weo:Transactional a weo:SearchIntent ; rdfs:label "Transactional" .
+weo:Informational a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Informational" .
+weo:Navigational  a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Navigational" .
+weo:CommercialInvestigation a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Commercial Investigation" .
+weo:Transactional a weo:SearchIntent , owl:NamedIndividual ; rdfs:label "Transactional" .
 
 weo:targetsIntent a owl:ObjectProperty ;
     rdfs:range weo:SearchIntent ;

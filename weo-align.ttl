@@ -55,12 +55,14 @@ weo:inTopic skos:closeMatch schema:about ;
 
 # ===========================================================================
 # PROV-O — the provenance spine. WEO's epistemic layering (entity / episode /
-# observation / derivation / interpretation) maps onto PROV as follows:
+# observation / derivation / interpretation / norm) maps onto PROV as follows:
 #   episode      -> in PROV terms this splits into the Activity that ran
 #                   (Crawl) and the Entity it produced (LLMResponse, SerpSnapshot)
 #   observation  -> assertions attributable to an activity/agent
 #   derivation   -> prov:wasDerivedFrom, qualified by method/model/confidence
 #   interpretation -> a labeled claim; WEO-native, no PROV analog
+#   norm         -> a standing rule over a class of cases; WEO-native, no PROV
+#                   analog. Its APPLICATION is provenance (see appliedPractice).
 # ===========================================================================
 
 weo:Crawl rdfs:subClassOf prov:Activity ;
