@@ -189,3 +189,17 @@ weo:concludedAt a owl:DatatypeProperty ;
     rdfs:domain weo:Experiment ; rdfs:range xsd:dateTime ;
     weo:epistemicLayer "episode" ;
     dct:description "When the experiment concluded and its outcome became immutable." .
+
+# --- Module header ----------------------------------------------------------
+# At the foot of the file, not the head. Turtle is order-independent, so this
+# parses exactly as it would at the top — and placing it here moves no line
+# below it. launch-guardian and if-control-center cite this file by line number
+# in 17 places; a header at the top would silently invalidate all of them at
+# once. Same idiom as the IRIs appended in 6469d13. Move it up top the day those
+# citations name terms instead of lines.
+
+weo:decision-module a owl:Ontology ;
+    dct:title "WEO Decision (the interpretation tier)" ;
+    dct:description "The top stratum of the core sample: where an observed condition becomes a diagnosed Gap, a Gap becomes candidate Tactics, the capability gate filters them to what is in reach, prior Experiments say which tactic has earned trust, and a Recommendation is issued — labeled, honestly, as an interpretation. Ships CLASSES, never VALUES: the dimensions, weights, and governing rules live one layer higher, in weo-strategy." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.3.0" .

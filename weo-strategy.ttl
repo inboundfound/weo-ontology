@@ -133,3 +133,14 @@ weo:halfLife a owl:DatatypeProperty ;
     rdfs:domain weo:Practice ; rdfs:range xsd:duration ;
     weo:epistemicLayer "norm" ;
     dct:description "Optional decay window for a Practice whose source is 'claimed': how long the assertion is trusted absent supporting Outcomes. Encodes the reality that today's answer-engine tactics may not survive the year — a claim nobody's experiments confirm ages out on its own." .
+
+# --- Module header ----------------------------------------------------------
+# At the foot of the file, not the head — see the note in weo-decision.ttl.
+# This file carries 14 of the line-number citations live in launch-guardian and
+# if-control-center; a header at the top would break every one of them.
+
+weo:strategy-module a owl:Ontology ;
+    dct:title "WEO Strategy (the norms tier)" ;
+    dct:description "The layer weo-decision deliberately left open: the standing rules — best practices, SOPs, lessons learned — that veto, reorder, or caveat a Recommendation before it reaches a human, the reusable Playbooks those rules travel in, and the tenancy axis that decides whose rules win. Introduces the norm stratum: a claim about what SHOULD govern a choice, as opposed to what is or is inferred to be." ;
+    dct:creator "Inbound Found" ;
+    owl:versionInfo "0.3.0" .
