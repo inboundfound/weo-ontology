@@ -1,26 +1,44 @@
 #!/usr/bin/env python3
-"""Verify `weo-*.ttl:LINE` citations in consuming code still land on their term.
+"""Verify that consuming code's references to WEO terms still resolve.
 
-launch-guardian and if-control-center annotate their models with the WEO term each
-one implements, cited by file **and line** — `weo-decision.ttl:46-49`. Those
-citations are exact when written and silently false the moment anything is
-inserted above them. Nothing breaks; the comments just start pointing at the wrong
-term, and the next reader trusts them.
+Consumers annotate their models with the WEO term each one implements. There are
+two ways to write that reference, and this checks both.
 
-This resolves every citation against the ontology as it stands now and exits
-non-zero if any of them no longer names exactly one term.
+TERM REFERENCES (preferred) name the term itself:
+
+    // `weo:Recommendation` (`weo-decision.ttl`)
+
+A term name is stable for the life of the term, so the only way this goes wrong
+is if the term is renamed or removed — which this catches.
+
+LINE CITATIONS name a position in a file:
+
+    // weo-decision.ttl:78-82
+
+These are exact when written and silently false the moment anything is inserted
+above them. Nothing breaks; the comment just starts naming a different term, and
+the next reader trusts it. Worse, a line range can drift onto a *different* valid
+term, in which case it still resolves cleanly and only a human comparing the
+prose to the range would notice. Prefer term references; this mode exists to
+catch the stragglers.
 
     python tools/verify_citations.py ../launch-guardian ../if-control-center
     python tools/verify_citations.py --ref origin/main ~/src/launch-guardian
     python tools/verify_citations.py .          # defaults to the cwd
 
-Statuses:
+Line-citation statuses:
     OK              the range covers exactly one term
     SPANS-MULTIPLE  the range runs across a term boundary — tighten it
     NO-TERM         the range covers no declaration (usually module header prose;
                     those cannot be re-anchored to a term name, so quote without
                     a line number instead)
     OUT-OF-RANGE    the file is now shorter than the citation
+
+Term-reference statuses:
+    OK              the term is declared in the ontology
+    UNDECLARED      no module declares it — renamed, removed, or a typo
+
+Exits non-zero if anything in either mode fails.
 
 No third-party dependencies: this is meant to run in anyone's CI.
 """
@@ -34,6 +52,7 @@ import sys
 
 ONTOLOGY_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CITATION = re.compile(r"(weo-[a-z]+\.ttl):(\d+)(?:\s*-\s*(\d+))?")
+TERM_REF = re.compile(r"(?<![\w-])weo:([A-Za-z][\w-]*)")
 DECLARATION = re.compile(r"^weo:([\w-]+)\s+(?:a\s|rdfs:|skos:)")
 SKIP_DIRS = {".git", "node_modules", "dist", "build", ".next", "coverage", "__pycache__"}
 TEXT_SUFFIXES = (".ts", ".tsx", ".js", ".mjs", ".cjs", ".py", ".md", ".cypher", ".graphql", ".gql")
@@ -68,7 +87,7 @@ def sources(root: str, ref: str | None):
     """Yield (label, text) for each candidate file, from a git ref or the worktree."""
     if ref:
         listing = subprocess.run(
-            ["git", "grep", "-l", r"weo-.*\.ttl:", ref],
+            ["git", "grep", "-l", "-e", r"weo-.*\.ttl:", "-e", r"weo:", ref],
             cwd=root, capture_output=True, text=True,
         )
         for spec in listing.stdout.split():
@@ -86,17 +105,37 @@ def sources(root: str, ref: str | None):
                 text = open(path, encoding="utf-8").read()
             except (UnicodeDecodeError, OSError):
                 continue
-            if "ttl:" in text:
+            if "ttl:" in text or "weo:" in text:
                 yield os.path.relpath(path, root), text
+
+
+def declared_terms() -> set[str]:
+    """Every term any module declares — the vocabulary a consumer may name."""
+    terms: set[str] = set()
+    for name in os.listdir(ONTOLOGY_DIR):
+        if not (name.startswith("weo-") and name.endswith(".ttl")):
+            continue
+        with open(os.path.join(ONTOLOGY_DIR, name), encoding="utf-8") as handle:
+            for line in handle:
+                match = DECLARATION.match(line)
+                if match:
+                    terms.add(match.group(1))
+    return terms
 
 
 def check(roots: list[str], ref: str | None) -> int:
     ontology = load_ontology()
+    vocabulary = declared_terms()
     rows = []
+    term_rows = []
     for root in roots:
         label = os.path.basename(os.path.abspath(root))
         for filename, text in sources(root, ref):
             for line_number, line in enumerate(text.split("\n"), 1):
+                for term in TERM_REF.findall(line):
+                    status = "OK" if term in vocabulary else "UNDECLARED"
+                    term_rows.append((label, filename, line_number,
+                                      "weo:" + term, status))
                 for hit in CITATION.finditer(line):
                     name = hit.group(1)
                     start = int(hit.group(2))
@@ -120,22 +159,40 @@ def check(roots: list[str], ref: str | None) -> int:
                     rows.append((label, filename, line_number, hit.group(0), status,
                                  " + ".join("weo:" + f for f in found)))
 
-    if not rows:
-        print("No weo-*.ttl citations found. Nothing to verify.")
+    if not rows and not term_rows:
+        print("No WEO references found. Nothing to verify.")
         return 0
 
-    rows.sort()
-    width = max(len(row[3]) for row in rows)
     failures = [row for row in rows if row[4] != "OK"]
-    for repo, filename, line_number, citation, status, resolved in rows:
-        marker = " " if status == "OK" else "✗"
-        print(f"{marker} {repo}/{filename}:{line_number}  {citation:{width}}  "
-              f"{status:15} {resolved}")
-    print(f"\n{len(rows)} citations · {len(rows) - len(failures)} OK · {len(failures)} to fix")
-    if failures:
-        print("\nRe-anchor a failing citation to the term name (`weo:Recommendation`) "
-              "rather than widening the range.")
-    return 1 if failures else 0
+    bad_terms = [row for row in term_rows if row[4] != "OK"]
+
+    if rows:
+        rows.sort()
+        width = max(len(row[3]) for row in rows)
+        print("LINE CITATIONS")
+        for repo, filename, line_number, citation, status, resolved in rows:
+            marker = " " if status == "OK" else "✗"
+            print(f"{marker} {repo}/{filename}:{line_number}  {citation:{width}}  "
+                  f"{status:15} {resolved}")
+        print(f"\n  {len(rows)} citations · {len(rows) - len(failures)} OK · "
+              f"{len(failures)} to fix")
+        if failures:
+            print("\n  Re-anchor a failing citation to the term name "
+                  "(`weo:Recommendation`) rather than widening the range.")
+        print()
+
+    if term_rows:
+        distinct = sorted({row[3] for row in term_rows})
+        print("TERM REFERENCES")
+        for repo, filename, line_number, term, status in sorted(bad_terms):
+            print(f"✗ {repo}/{filename}:{line_number}  {term}  {status}")
+        print(f"  {len(term_rows)} references · {len(distinct)} distinct terms · "
+              f"{len(bad_terms)} unresolved")
+        if bad_terms:
+            print("\n  An unresolved term was renamed, removed, or mistyped. Check it "
+                  "against the module it claims to come from.")
+
+    return 1 if (failures or bad_terms) else 0
 
 
 def main() -> int:
