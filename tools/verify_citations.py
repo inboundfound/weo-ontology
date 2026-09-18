@@ -84,21 +84,31 @@ def load_ontology() -> dict[str, tuple[dict[int, str], int]]:
 
 
 def sources(root: str, ref: str | None):
-    """Yield (label, text) for each candidate file, from a git ref or the worktree."""
+    """Yield (label, text) for each candidate file, from a git ref or the worktree.
+
+    This file is skipped. Its docstring demonstrates a bad citation, on purpose,
+    and the checker reading its own example reported a failure on every clean
+    run — which teaches the one habit a checker must never teach, that a red
+    result is background noise.
+    """
+    me = os.path.basename(__file__)
     if ref:
         listing = subprocess.run(
             ["git", "grep", "-l", "-e", r"weo-.*\.ttl:", "-e", r"weo:", ref],
             cwd=root, capture_output=True, text=True,
         )
         for spec in listing.stdout.split():
+            label = spec.split(":", 1)[1]
+            if os.path.basename(label) == me:
+                continue
             blob = subprocess.run(["git", "show", spec], cwd=root,
                                   capture_output=True, text=True).stdout
-            yield spec.split(":", 1)[1], blob
+            yield label, blob
         return
     for directory, subdirs, files in os.walk(root):
         subdirs[:] = [d for d in subdirs if d not in SKIP_DIRS]
         for name in files:
-            if not name.endswith(TEXT_SUFFIXES):
+            if not name.endswith(TEXT_SUFFIXES) or name == me:
                 continue
             path = os.path.join(directory, name)
             try:
